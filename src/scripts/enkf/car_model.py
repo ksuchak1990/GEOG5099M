@@ -58,11 +58,12 @@ class Car_Model():
 # Constants
 CAR_X_SPEED = 5
 CAR_Y_SPEED = 5
-N_STEPS = 50
+N_STEPS = 100
 OBS_NOISE_MEAN = 0
 OBS_NOISE_STD = 5
 MODEL_NOISE_MEAN = 0
-MODEL_NOISE_STD = 10
+MODEL_NOISE_STD = 5
+ASSIMILATION_PERIOD = 10
 
 def make_data(params, n, vis=True):
     """
@@ -111,7 +112,7 @@ model_params = {'x_speed': CAR_X_SPEED,
                 'noise_std': MODEL_NOISE_STD}
 
 filter_params = {'max_iterations': 50,
-                 'ensemble_size': 10,
+                 'ensemble_size': 20,
                  'state_vector_length': 2,
                  'data_vector_length': 2,
                  'H': np.identity(2),
@@ -122,7 +123,7 @@ e = EnKF(Car_Model, filter_params, model_params)
 
 # Step filter
 for i in range(N_STEPS):
-    if i % 5 == 0:
+    if i % ASSIMILATION_PERIOD == 0:
         observation = np.array([obs_x[i], obs_y[i]])
         e.step(observation)
     else:
