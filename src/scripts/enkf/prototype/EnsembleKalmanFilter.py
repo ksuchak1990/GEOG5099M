@@ -29,7 +29,9 @@ class EnsembleKalmanFilter:
         # Ensure that model has correct attributes
         # Should probably make sure that step is callable too
         if not hasattr(model, 'step'):
-            raise AttributeError("Model has no 'step()' method.")
+            raise AttributeError("Model has no 'step' method.")
+        if not callable(model.step):
+            raise AttributeError("Model 'step' is not callable.")
 
         # Filter attributes - outlines the expected params
         self.max_iterations = None
@@ -59,8 +61,14 @@ class EnsembleKalmanFilter:
         self.H_transpose = self.H.T
 
         # Make sure that we have a data covariance matrix
-        # Assumes that elements in the observation are independent of each other
-        # So the matrix is diagonal
+        """
+        https://arxiv.org/pdf/0901.3725.pdf -
+        The covariance matrix R describes the estimate of the error of the data; if
+        the random errors in the entries of the data vector d are independent,R is
+        diagonal and its diagonal entries are the squares of the standard
+        deviation (“error size”) of the error of the corresponding entries of the
+        data vector d.
+        """
         if not self.data_covariance:
             self.data_covariance = np.diag(self.R_vector)
 
@@ -197,24 +205,6 @@ class EnsembleKalmanFilter:
         More standard version
         """
         C = np.cov(self.state_ensemble)
-#        C = self.make_ensemble_covariance()
         state_covariance = self.H @ C @ self.H_transpose
         diff = state_covariance - self.data_covariance
         return C @ self.H_transpose @ np.linalg.inv(diff)
-
-    def make_data_covariance(self):
-        """
-        Make a diagonal data covariance matrix.
-        Contains square of s.d. of error of corresponding entries in data
-        vector.
-        Assumes that errors in data vector are independent.
-        https://arxiv.org/pdf/0901.3725.pdf -
-        The covariance matrix R describes the estimate of the error of the data; if
-        the random errors in the entries of the data vector d are independent,R is
-        diagonal and its diagonal entries are the squares of the standard
-        deviation (“error size”) of the error of the corresponding entries of the
-        data vector d.
-        """
-        # NEED TO DO THIS PROPERLY!
-        # errors = np.zeros(shape=(self.data_vector_length, 1))
-        # return np.diag(errors)
