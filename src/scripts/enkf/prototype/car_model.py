@@ -9,7 +9,7 @@ last_modified: 19/04/08
 import matplotlib.pyplot as plt
 import numpy as np
 from EnsembleKalmanFilter import EnsembleKalmanFilter as EnKF
-np.random.seed(42)
+np.random.seed(666)
 
 class Car_Model():
     def __init__(self, model_params):
@@ -60,7 +60,7 @@ CAR_X_SPEED = 5
 CAR_Y_SPEED = 5
 N_STEPS = 100
 OBS_NOISE_MEAN = 0
-OBS_NOISE_STD = 5
+OBS_NOISE_STD = 10
 MODEL_NOISE_MEAN = 0
 MODEL_NOISE_STD = 5
 ASSIMILATION_PERIOD = 10
@@ -100,10 +100,14 @@ true_x, true_y, true_times = make_data(track_params, N_STEPS, vis=False)
 # Make observation data
 obs_params = {'x_speed': CAR_X_SPEED,
               'y_speed': CAR_Y_SPEED,
-              'noise_mean': OBS_NOISE_MEAN,
-              'noise_std': OBS_NOISE_STD}
+              'noise_mean': 0,
+              'noise_std': 0}
 
 obs_x, obs_y, obs_times = make_data(obs_params, N_STEPS, vis=False)
+print(obs_y)
+obs_x = [x + np.random.normal(OBS_NOISE_MEAN, OBS_NOISE_STD) for x in obs_x]
+obs_y = [y + np.random.normal(OBS_NOISE_MEAN, OBS_NOISE_STD) for y in obs_y]
+print(obs_x)
 
 # Set up EnKF
 model_params = {'x_speed': CAR_X_SPEED,
