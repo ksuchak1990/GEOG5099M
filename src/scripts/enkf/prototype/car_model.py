@@ -156,13 +156,11 @@ def do_more_plots(x, y):
     plt.show()
 
 def do_error_plots(x, y):
-    x_data_error = [np.abs(obs_x[i] - true_x[i]) for i in range(len(true_x))] 
-    y_data_error = [np.abs(obs_y[i] - true_y[i]) for i in range(len(true_y))]
     x_model_error = [np.abs(x[i] - true_x[i]) for i in range(len(true_x))]
     y_model_error = [np.abs(y[i] - true_y[i]) for i in range(len(true_y))]
 
     plt.figure()
-    data = [x_data_error, y_data_error, x_model_error, y_model_error]
+    data = [x_model_error, y_model_error]
     plt.boxplot(data)
     plt.show()
 
@@ -202,9 +200,11 @@ def test_ensemble_size(n, t=ASSIMILATION_PERIOD):
     # Plotting
     do_plots(model_x, model_y)
 
-sizes = [2, 5, 10, 20, 50, 100]
-periods = [2, 5, 10, 20, 50]
-for t in periods:
-    for n in sizes:
-        print(n, t)
-        test_ensemble_size(n, t)
+def wrap_runner():
+    sizes = [2, 5, 10, 20, 50, 100]
+    periods = [2, 5, 10, 20, 50]
+    for t in periods:
+        for n in sizes:
+            print(n, t)
+            test_ensemble_size(n, t)
+wrap_runner()
