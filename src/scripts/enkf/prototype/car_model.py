@@ -3,7 +3,6 @@ car_model.py
 A python script to test out the Ensemble Kalman Filter with a very basic model.
 @author: ksuchak1990
 data_created: 19/04/08
-last_modified: 19/04/08
 """
 # Imports
 import matplotlib.pyplot as plt
@@ -60,10 +59,10 @@ CAR_X_SPEED = 5
 CAR_Y_SPEED = 5
 N_STEPS = 100
 OBS_NOISE_MEAN = 0
-OBS_NOISE_STD = 10
+OBS_NOISE_STD = 20
 MODEL_NOISE_MEAN = 0
-MODEL_NOISE_STD = 5
-ASSIMILATION_PERIOD = 10
+MODEL_NOISE_STD = 20
+ASSIMILATION_PERIOD = 5
 
 def make_data(params, n, vis=True):
     """
@@ -104,10 +103,8 @@ obs_params = {'x_speed': CAR_X_SPEED,
               'noise_std': 0}
 
 obs_x, obs_y, obs_times = make_data(obs_params, N_STEPS, vis=False)
-print(obs_y)
 obs_x = [x + np.random.normal(OBS_NOISE_MEAN, OBS_NOISE_STD) for x in obs_x]
 obs_y = [y + np.random.normal(OBS_NOISE_MEAN, OBS_NOISE_STD) for y in obs_y]
-print(obs_x)
 
 # Set up EnKF
 model_params = {'x_speed': CAR_X_SPEED,
@@ -116,7 +113,7 @@ model_params = {'x_speed': CAR_X_SPEED,
                 'noise_std': MODEL_NOISE_STD}
 
 filter_params = {'max_iterations': 50,
-                 'ensemble_size': 20,
+                 'ensemble_size': 100,
                  'state_vector_length': 2,
                  'data_vector_length': 2,
                  'H': np.identity(2),
@@ -137,20 +134,20 @@ model_x = [x[0] for x in e.results]
 model_y = [x[1] for x in e.results]
 
 # Some plotting
-def do_plots():
+def do_plots(x, y):
     plt.figure()
     plt.plot(true_x, true_y, '--b', label='truth')
     plt.scatter(obs_x, obs_y, color='black', alpha=0.5, label='obs')
-    plt.scatter(model_x, model_y, color='red', alpha=0.5, label='model')
+    plt.scatter(x, y, color='red', alpha=0.5, label='model')
     plt.title('$\sigma_o={0}$, $\sigma_m={1}$'.format(OBS_NOISE_STD,
                                                                 MODEL_NOISE_STD))
     plt.legend()
     plt.show()
 
-def do_more_plots():
+def do_more_plots(x, y):
     plt.figure()
-    plt.plot(obs_times, model_x, label='model x')
-    plt.plot(obs_times, model_y, label='model y')
+    plt.plot(obs_times, x, label='model x')
+    plt.plot(obs_times, y, label='model y')
     plt.plot(obs_times, obs_x, label='obs x')
     plt.plot(obs_times, obs_y, label='obs y')
     plt.title('$\sigma_o={0}$, $\sigma_m={1}$'.format(OBS_NOISE_STD,
@@ -158,5 +155,56 @@ def do_more_plots():
     plt.legend()
     plt.show()
 
-do_plots()
-do_more_plots()
+def do_error_plots(x, y):
+    x_data_error = [np.abs(obs_x[i] - true_x[i]) for i in range(len(true_x))] 
+    y_data_error = [np.abs(obs_y[i] - true_y[i]) for i in range(len(true_y))]
+    x_model_error = [np.abs(x[i] - true_x[i]) for i in range(len(true_x))]
+    y_model_error = [np.abs(y[i] - true_y[i]) for i in range(len(true_y))]
+
+    plt.figure()
+    data = [x_data_error, y_data_error, x_model_error, y_model_error]
+    plt.boxplot(data)
+    plt.show()
+
+#do_plots(model_x, model_y)
+#do_more_plots(model_x, model_y)
+#do_error_plots(model_x, model_y)
+
+def test_ensemble_size(n, t=ASSIMILATION_PERIOD):
+    # Set up params
+    model_params = {'x_speed': CAR_X_SPEED,
+                'y_speed': CAR_Y_SPEED,
+                'noise_mean': MODEL_NOISE_MEAN,
+                'noise_std': MODEL_NOISE_STD}
+
+    filter_params = {'max_iterations': 50,
+                 'ensemble_size': n,
+                 'state_vector_length': 2,
+                 'data_vector_length': 2,
+                 'H': np.identity(2),
+                 'R_vector': np.array([OBS_NOISE_STD, OBS_NOISE_STD])}
+
+    # Set up filter
+    e = EnKF(Car_Model, filter_params, model_params)
+
+    # Step filter
+    for i in range(N_STEPS):
+        if i % t == 0:
+            observation = np.array([obs_x[i], obs_y[i]])
+            e.step(observation)
+        else:
+            e.step()
+
+    # Get model outputs
+    model_x = [x[0] for x in e.results]
+    model_y = [x[1] for x in e.results]
+
+    # Plotting
+    do_plots(model_x, model_y)
+
+sizes = [2, 5, 10, 20, 50, 100]
+periods = [2, 5, 10, 20, 50]
+for t in periods:
+    for n in sizes:
+        print(n, t)
+        test_ensemble_size(n, t)
