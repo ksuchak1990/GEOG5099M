@@ -199,6 +199,7 @@ def test_ensemble_size(n, t=ASSIMILATION_PERIOD):
 
     # Plotting
     do_plots(model_x, model_y)
+    do_error_plots(model_x, model_y)
 
 def wrap_runner():
     sizes = [2, 5, 10, 20, 50, 100]
