@@ -8,26 +8,74 @@
 \author{Keiran Suchak}
 
 \maketitle
+\tableofcontents
 
-\section{Introduction}
-\label{sec:intro}
+\newpage
 
-Use a reference for something \citep{railsback2011agent}
+What is this section about?
+
+\begin{itemize}
+    \item Pedestrian modelling, and the use of agent-based modelling to achieve
+        this
+    \item Methods to analyse agent-based models and ensure that they are
+        accurate
+    \item The work that currently exists regarding the application of data
+        assimilation methods to agent-based models, and the gap(s) in this field
+        that we aim to fill
+\end{itemize}
 
 \section{Pedestrian Modelling}
 \label{sec:pedestrians}
 
+\begin{itemize}
+    \item What is pedestrian modelling?
+    \item Why should we care?
+\end{itemize}
+
 \section{Agent-Based Modelling}
 \label{sec:abms}
 
-\subsection{What is an ABM?}
-\label{sub:abms:what}
+\begin{itemize}
 
-\subsection{Describing ABMs}
+    \item How does agent-based modelling fit into this?
+    \item What is agent-based modelling?
+    \item Why should we use it?
+\end{itemize}
+
+\subsection{Model Description}
 \label{sub:abms:description}
 
-\subsection{Designing ABMs}
+\begin{itemize}
+    \item How do we go about describing ABMs?
+        \begin{itemize}
+            \item Systematically in words (ODD) \citep{grimm2006standard}
+            \item Computationally/algorithmically \citep{north2014theoretical}
+            \item Mathematically
+                \citep{hinkelmann2011mathematical,hinkelmann2011adam}
+        \end{itemize}
+\end{itemize}
+
+\subsection{Model Design Concepts}
 \label{sub:abms:design}
+
+\begin{itemize}
+    \item What concepts feed into our model design process?
+        \citep{railsback2011agent}
+        \begin{itemize}
+            \item Emergence
+            \item Observation
+            \item Sensing
+            \item Adaptive behaviour
+            \item Prediction
+            \item Interaction
+            \item Scheduling
+            \item Stochasticity
+            \item Collectives
+        \end{itemize}
+\end{itemize}
+
+\subsection{Limitations}
+\label{sub:abms:limitations}
 
 \section{Model Analysis}
 \label{sec:analysis}
@@ -35,11 +83,46 @@ Use a reference for something \citep{railsback2011agent}
 \subsection{Validation}
 \label{sub:analysis:validation}
 
+\begin{itemize}
+    \item \citep{xiang2005verification}
+    \item \citep{klugl2008validation}
+    \item \citep{ormerod2009validation}
+\end{itemize}
+
 \subsection{Sensitivity Analysis}
 \label{sub:analysis:sensitivity}
 
+\begin{itemize}
+    \item What does it mean to perform sensitivity analysis?
+    \item Why do we do it?
+    \item How do we do it? \citep{thiele2014facilitating,ten2016sensitivity}
+\end{itemize}
+
 \subsection{Calibration}
 \label{sub:analysis:calibration}
+
+\begin{itemize}
+    \item Calibration of ABMs
+        \begin{itemize}
+            \item Different methods of model calibration
+                \citep{thiele2014facilitating}
+        \end{itemize}
+    \item Pros and cons of different methods
+\end{itemize}
+
+\section{Data Assimilation for Agent-Based Models}
+\label{sec:dyn_cal}
+
+\begin{itemize}
+    \item What work has been done so far with data assimilation for ABMs
+        \citep{ward2016dynamic,wang2015data}
+        \begin{itemize}
+            \item How valid/useful is this work?
+            \item What issues are there with this work?
+        \end{itemize}
+    \item What gaps exist in the field?
+    \item What can we do about them?
+\end{itemize}
 
 \bibliographystyle{unsrt}
 \bibliography{ref}
