@@ -1,0 +1,66 @@
+\documentclass[12pt, twoside, a4paper]{report}
+
+\usepackage{natbib}
+
+\begin{document}
+
+\title{Real-time Pedestrian Modelling: Implementing the Ensemble Kalman Filter
+for an Agent-Based Model}
+\author{Keiran Suchak --- 200888140}
+\maketitle
+
+\begin{abstract}
+This is the abstract.
+\end{abstract}
+
+\tableofcontents
+\listoffigures
+\listoftables
+
+\chapter*{Notes}
+
+\begin{itemize}
+    \item What is data assimilation?
+    \item What is the Ensemble Kalman Filter?
+    \item What are Agent-Based Models?
+    \item How do people model pedestrians?
+    \item EnKF: options for generating observations:
+        \begin{itemize}
+            \item External (the old way):
+                \begin{itemize}
+                    \item observations come from a previous run of the model
+                    \item therefore, they are independent
+                    \item the problem here is that the ensemble members probably
+                        have been set with the wrong entrances and exits for
+                        agents
+                    \item this is likely more realistic, ie when modelling
+                        people we ultimately won't know where they intend to go
+                    \item but I don't think that we can overcome this without
+                        parameter estimation DA.
+                \end{itemize}
+            \item Internal (the new way):
+                \begin{itemize}
+                    \item observations come from the \texttt{base\_model}
+                    \item all ensemble members are deep copies of the
+                        \texttt{base\_model}
+                    \item consequently, they have the same parameters and
+                        initial conditions
+                    \item the problem with this is that is not realistic
+                    \item but we're going to do it anyway (for now)
+                \end{itemize}
+        \end{itemize}
+\end{itemize}
+
+\include{chapters/introduction}
+
+\include{chapters/lit_review}
+
+\include{chapters/method}
+
+\include{chapters/results}
+
+\include{chapters/conclusion}
+
+\bibliography{references}\label{ch:bibliography}
+
+\end{document}
