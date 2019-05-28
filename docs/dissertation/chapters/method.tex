@@ -36,22 +36,17 @@ In this case, each of the components are taken to mean
     \item Marginal likelihood: The probability of the data
 \end{enumerate}
 
-\begin{enumerate}
-    \item $P \left( A \right)$: Prior
-    \item $P \left( A|B \right)$: Posterior
-    \item $P \left( B|A \right)$: Likelihood
-    \item $P \left( B \right)$: Marginal likelihood
-\end{enumerate}
-
 \section{Kalman Filter}\label{sec:method:kf}
 
-There's a lovely data assimilation method called the Kalman Filter
-\citep{kalman1960new}.
+The Kalman Filter \citep{kalman1960new} is the best linear unbiased estimator,
+minimising posterior mean squared error.
 
 \begin{itemize}
     \item What is the Kalman Filter?
-    \item How does it work?
-    \item When is it good?
+    \item How does it work? Sequential data assimilation to update state and
+        covariance matrix, weighted based on model forecasts and observations.
+    \item When is it good? Optimal solution for linear model and Gaussian
+        errors.
     \item When is it bad?
     \item What can we do to improve it?
 \end{itemize}
@@ -113,3 +108,17 @@ The random vector is drawn from an unbiased normal distribution:
 Talk about the different types of EnKF and the implications for ensemble size
 \citep{keller2018comparing}.
 
+\begin{itemize}
+    \item Damping: counteract filter divergence
+    \item Localisation: reduce the effect of spurious correlations
+    \item Hybrid EnKF: Covariance matrix is made up of the weighted sum of the
+        usual covariance matrix and a separate static covariance matrix that
+        encodes prior underlying knowledge about the system
+    \item Dual EnKF: Split the state vector into state and parameters. At
+        assimilation: update parameters, recalculate forecast, update state
+    \item Normal Score EnKF: Developed to handle non-Gaussian PDFs in EnKF. At
+        assimilation: transform state, parameters and measurements into
+        Z-scores, perform EnKF update based on transformed values, transform
+        back from Z-scores
+    \item Iterative EnKF
+\end{itemize}

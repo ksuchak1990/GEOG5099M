@@ -2,18 +2,63 @@
 
 \section{Model Calibration}\label{sec:lit_rev:calibration}
 
-\section{Data Assimilation with Agent-Based Models}\label{sec:lit_rev:da_abm}
+As touched upon in Chapter \ref{ch:intro}, the process of developing an
+agent-based model typically involves some form of model calibration.
+Model calibration is the procedure of fine-tuning the model that we are using
+such that it best fits the particular situation that we are seeking to model
+\citep{crooks2012introduction}.
+There are a large number of different manners in which we can calibrate
+agent-based models \citep{thiele2014facilitating}.
 
 \begin{itemize}
-    \item \citep{ward2016dynamic}
-    \item \citep{wang2015data}
-    \item \citep{rai2013behavior}
-    \item \citep{}
+    \item MORE ABOUT MODEL CALIBRATION
 \end{itemize}
 
-\section{Data Assimilation with Cellular Automata}\label{sec:lit_rev:da_ca}
+\section{Data Assimilation}\label{sec:lit_rev:da}
 
 \begin{itemize}
+    \item DATA ASSIMILATION IN GENERAL
+    \item HOW THIS RELATES TO CALIBRATION
+\end{itemize}
+
+The process of data assimilation involves making use of observations along with
+prior knowledge (which, in our case, is encoded in a model) to produce
+increasingly accurate estimates of variables of interest.
+Such a process can be achieved through a Bayesian filtering approach
+\citep{grewal1995kalman}.
+
+\subsection{Data Assimilation with Agent-Based Models}\label{sub:lit_rev:da:abm}
+
+\begin{itemize}
+    \item \cite{ward2016dynamic} --- model of pedestrians on Briggate, a 1-D
+        strip along which pedestrians walk, using enkf for both state and
+        parameter calibration.
+    \item \cite{wang2013data, wang2015data} --- agents occupying a smart
+        environment/building with a view to modelling population density, using
+        particle filter.
+    \item \cite{rai2013behavior} --- agents occupying a smart office/building,
+        using particle filter, extends \cite{wang2013data, wang2015data} by
+        incorporating a Hidden Markov Model for behaviour pattern detection.
+    \item \cite{wang2017random} --- model of maritime pirates, using random
+        finite set based data assimilation instead of kf or pf --- why? does
+        this have any relevance?
+\end{itemize}
+
+\subsection{Data Assimilation with Cellular Automata}\label{sub:lit_rev:da:ca}
+
+Whilst this dissertation focuses on the application of data assimilation methods
+to agent-based models, there also exists a body of work that makes use of the
+same methods in conjunction with cellular automata.
+
+\begin{itemize}
+    \item WHAT ARE CELLULAR AUTOMATA
+    \item HOW DO THEY RELATE TO ABMS?
+    \item WHAT IS THE POINT OF INCLUDING THIS?
+\end{itemize}
+
+\begin{itemize}
+    \item \cite{li2017exploring} --- CA for urban land use, using enkf.
+    \item \cite{li2012assimilating} --- CA for urban land use, using enkf.
     \item 
 \end{itemize}
 
