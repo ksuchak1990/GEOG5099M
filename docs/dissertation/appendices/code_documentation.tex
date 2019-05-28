@@ -3,3 +3,31 @@
 
 This is where I explain the design choices for how the enkf was coded.
 
+\begin{itemize}
+    \item options for generating observations:
+        \begin{itemize}
+            \item external
+                \begin{itemize}
+                    \item observations come from a previous model run as
+                    synthetic data
+                    \item therefore they should be independent
+                    \item the problem here is that the ensemble members probably
+                    have been set with the wrong entrances and exits or agents
+                    \item this is likely more realistic, because when modelling
+                    people we ultimately won't know where they intend to go
+                    \item but we may be able to overcome this using parameter
+                    estimation DA.
+                \end{itemize}
+            \item internal
+                \begin{itemize}
+                    \item observations come from the \texttt{base\_model}
+                    \item all ensemble members are deep copies of the
+                    \texttt{base\_model}
+                    \item consequently, they have the same parameters and
+                    initial conditions
+                    \item problem here is that it's not very realistic
+                    \item but we're going with it for this particular version
+                \end{itemize}
+        \end{itemize}
+\end{itemize}
+
