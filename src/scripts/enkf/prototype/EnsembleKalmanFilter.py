@@ -206,5 +206,5 @@ class EnsembleKalmanFilter:
         """
         C = np.cov(self.state_ensemble)
         state_covariance = self.H @ C @ self.H_transpose
-        diff = state_covariance - self.data_covariance
+        diff = state_covariance + self.data_covariance
         return C @ self.H_transpose @ np.linalg.inv(diff)
