@@ -1,3 +1,108 @@
 \chapter{Introduction}\label{ch:intro}
 
-This is the introduction.
+A better understanding of how people move around their environment is of great
+utility to both academics and policy-makers.
+Such knowledge can be made use of in the contexts of urban planning, event
+management and emergency response, particularly when considering urban
+environments.
+Furthermore, this may also be of use to those interested in the social issues of
+mobility, inclusivity and accessibility of opportunities.
+
+When considering such concepts, investigators often make use of modelling
+techniques.
+At their most fundamental, models represent our understanding of
+the system that we are studying --- an understanding that may not be perfect
+\citep{stanislaw1986tests}.
+There exist modelling techniques for the simulation of how pedestrians move
+around urban spaces.
+However, these methods exist largely in isolation of the real-world --- that is
+to say that whilst the simulations aim to reflect the real-world, there is no
+method by which we can incorporate up-to-date observations into these models to
+stop their divergence from reality.
+
+Simulating pedestrian behaviour is often undertaken at the micro-scale, with
+such models typically aiming to model at the individual level or on a spatially
+fine-grained grid \citep{burstedde2001simulation}.
+One of the most prevalent simulation methods in this field is that of
+Agent-Based Modelling.
+Such methods consist of two key components: agents and environments.
+In an Agent-Based Model, we prescribe sets of rules by which individuals interact with each
+other and their local environments; as interactions take place on the
+micro-scale, we typically observe the emergence of structure at the macro-scale
+such as crowding \citep{batty2003discrete} or lane formation \citep{liu2014agent}.
+The evaluation of these rules is often not deterministic and instead
+introduces some element of randomness; these stochastic elements aim to emulate
+the variability of human behaviour.
+The introduction of such randomness in conjunction with an imperfect
+understanding of the phenomena at play, however, typically result in simulation
+runs diverging from the real system.
+
+In constructing their models, agent-based modellers undertake a development
+process that involves model verification, validation and calibration.
+We can take these to mean the following:
+\begin{itemize}
+    \item \textbf{Model verification}: the process of ensuring that the implementation is
+        an accurate representation of the model \citep{xiang2005verification}.
+    \item \textbf{Model validation}: the process of ensuring that the chosen model is an
+        accurate representation of the phenomenon that we wish to study
+        \citep{crooks2008key}.
+    \item \textbf{Model calibration}: the process of searching for model parameter values
+        such that we can achieve validation \citep{thiele2014facilitating}.
+\end{itemize}
+Beyond this, modellers also make efforts to ensure that the initial model
+conditions are realistic by setting them based on historical data.
+
+The practices of validation, calibration and setting initial model states based
+on historical data are appropriate for offline evaluations such as testing designs
+of new buildings or experimenting with different individual behaviours; however,
+when aiming to simulate events in real-time, this simply delays the inevitable
+divergence of the model from the real system.
+Furthermore, model parameters may be transient and thus require to be updated as
+time passes and the dynamics evolve.
+
+Given the apparently inevitable divergence of stochastic simulations from the
+real systems that they aim to model, one may alternatively turn to big data.
+Data is now being generated in higher volumes and at greater velocity than ever
+before \citep{chen2014big}; however, there also exist issues with observation
+data from such systems.
+Whilst models typically allow us to simulate a whole system, observations are
+typically sparse in either time or space (or both); this is to say that
+observations rarely provide complete coverage of the events.
+We therefore seek a solution whereby we can integrate up-to-date observations
+into our models as the models continue to simulate the system.
+
+One of the methods by which we can combine knowledge represented by our model
+with observations as they become available is through data assimilation
+techniques, which are most commonly used in the field of numerical weather
+prediction \citep{kalnay2003atmospheric}.
+Such techniques are typically made up of two steps:
+\begin{enumerate}
+    \item \textbf{Predict}: Run the model forward, estimating the state of the system,
+    until new observations become available.
+    \item \textbf{Update}: Upon receipt of new observations, combine the model's estimate
+    of the system state with the new data.
+\end{enumerate}
+These steps are repeated iteratively in a cycle.
+It is important to note that just as the there is error associated with the
+model, we also acknowledge that there is observational error associated with the
+data.
+The aim of incorporating the observations into the model is to improve the model
+accuracy with respect to the true system state.
+
+A large volume of work exists in which such techniques are applied to
+meteorological systems where the models used are based on differential
+equations.
+Significantly less work exists in which data assimilation methods are applied to
+agent-based models --- in particular pedestrian models.
+This dissertation therefore aims to expand on the pre-existing work by
+implementing a data assimilation scheme known as the Ensemble Kalman Filter in
+conjunction with a relatively simple agent-based model of pedestrians crossing a
+two-dimensional station from one side to the other.
+
+The remainder of this dissertation will provide an overview of some of the work
+that has been undertaken thus far on implementing data assimilation schemes with
+agent based models (Chapter \ref{ch:lit_rev}), elaborate on how data
+assimilation works --- particularly focussing on the aforementioned Ensemble Kalman
+Filter (Chapter \ref{ch:method}) --- and examine the effectiveness of this
+method in improving the accuracy of the agent-based model (Chapter
+\ref{ch:results}).
