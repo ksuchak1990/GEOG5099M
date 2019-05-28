@@ -1,6 +1,8 @@
 \documentclass[12pt, twoside, a4paper]{report}
 
-\usepackage{natbib}
+\usepackage[sort&compress]{natbib}
+\usepackage[toc, page]{appendix}
+\usepackage[nottoc]{tocbibind}
 
 \begin{document}
 
@@ -9,9 +11,9 @@ for an Agent-Based Model}
 \author{Keiran Suchak --- 200888140}
 \maketitle
 
-\begin{abstract}
-This is the abstract.
-\end{abstract}
+%\begin{abstract}
+%This is the abstract.
+%\end{abstract}
 
 \tableofcontents
 \listoffigures
@@ -49,6 +51,21 @@ This is the abstract.
                     \item but we're going to do it anyway (for now)
                 \end{itemize}
         \end{itemize}
+    \item What happens when an agent in one of the ensemble member models tries
+        to leave the station early? Because we're only doing state estimation
+        (meaning just the agent coordinates), the agent won't get reactivated.
+    \item Errors should converge on something relating to twice the exit
+        distance.
+\end{itemize}
+
+\section*{Structure}
+
+\begin{itemize}
+    \item What is the problem?
+    \item Why should people care?
+    \item What has been done in the past to try to solve the problem?
+    \item What are we doing to solve the problem? How is this different?
+    \item How well does our attempt work? How does this compare to others?
 \end{itemize}
 
 \include{chapters/introduction}
@@ -61,6 +78,12 @@ This is the abstract.
 
 \include{chapters/conclusion}
 
-\bibliography{references}\label{ch:bibliography}
+\begin{appendix}
+    \include{appendices/code_documentation}
+\end{appendix}
+
+\bibliographystyle{agsm}
+\bibliography{references}
+
 
 \end{document}

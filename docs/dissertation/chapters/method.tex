@@ -1,3 +1,115 @@
 \chapter{Method}\label{ch:method}
 
-This is the method.
+\begin{itemize}
+    \item Intro to data assimilation
+    \item What is data assimilation?
+    \item Where does it come from?
+    \item What is the point?
+    \item What types of data assimilation are available to us?
+    \item Which one are we going to use?
+\end{itemize}
+
+The updating of the model state is undertaken on the basis of Bayes Rule:
+\begin{equation}
+    P(A|B) = \frac{P(B|A) P(A)}{P(B)}
+\end{equation}
+Bayes Rule is made up of four components:
+\begin{enumerate}
+    \item $P \left( A \right)$: Prior
+    \item $P \left( A|B \right)$: Posterior
+    \item $P \left( B|A \right)$: Likelihood
+    \item $P \left( B \right)$: Marginal likelihood
+\end{enumerate}
+
+Then let's frame our problem notationally --- this is what Bayes theorem looks
+like for our situation:
+\begin{equation}
+    P \left( \mathbf{x} | \mathbf{d} \right) =
+       \frac{P \left( \mathbf{d} | \mathbf{x} \right)
+             P \left( \mathbf{x} \right)}{P \left( \mathbf{d} \right)} 
+\end{equation}
+In this case, each of the components are taken to mean
+\begin{enumerate}
+    \item Prior: The probability of the model state
+    \item Posterior: The probability of the model state given the data
+    \item Likelihood: The probability of the data given the model state
+    \item Marginal likelihood: The probability of the data
+\end{enumerate}
+
+\begin{enumerate}
+    \item $P \left( A \right)$: Prior
+    \item $P \left( A|B \right)$: Posterior
+    \item $P \left( B|A \right)$: Likelihood
+    \item $P \left( B \right)$: Marginal likelihood
+\end{enumerate}
+
+\section{Kalman Filter}\label{sec:method:kf}
+
+There's a lovely data assimilation method called the Kalman Filter
+\citep{kalman1960new}.
+
+\begin{itemize}
+    \item What is the Kalman Filter?
+    \item How does it work?
+    \item When is it good?
+    \item When is it bad?
+    \item What can we do to improve it?
+\end{itemize}
+
+\section{Ensemble Kalman Filter}\label{sec:method:enkf}
+
+Problems with the Kalman Filter:
+\begin{itemize}
+    \item it assumes Gaussian PDFs
+    \item it assumes linear model
+    \item Cost of evolving covariance matrix
+\end{itemize}
+
+In order address some of these problems, the Ensemble Kalman Filter was
+developed \citep{evensen2003ensemble,
+evensen2009ensemble}, which acts as an approximation of the Kalman Filter.
+This approximation is achieved by using an ensemble of sample state vectors to
+represent the state distribution.
+As such, the state is represented as follows:
+\begin{equation}
+    \mathbf{X} = \left[ \mathbf{x}_1, \ldots, \mathbf{x}_N \right]
+               = \left[ \mathbf{x}_i \right], \quad \forall i \in (1, N),
+\end{equation}
+where the state ensemble matrix, $\mathbf{X}$, consists of $N$ state vectors,
+$\mathbf{x}_i$.
+Similarly, the observations are represented as follows:
+\begin{equation}
+    \mathbf{D} = \left[ \mathbf{d}_1, \ldots, \mathbf{d}_N \right]
+               = \left[ \mathbf{d}_i \right], \quad \forall i \in (1, N),
+\end{equation}
+with each member of the data ensemble matrix, $\mathbf{D}$, being the sum of the
+original observation $\mathbf{d}$, and a random vector, $\mathbf{\epsilon}_i$:
+\begin{equation}
+    \mathbf{d}_i = \mathbf{d} + \mathbf{\epsilon}, \quad
+                   \forall i \in (1, N).
+\end{equation}
+The random vector is drawn from an unbiased normal distribution:
+\begin{equation}
+    \mathbf{\epsilon} \sim \mathcal{N} (0, \mathbf{R}).
+\end{equation}
+
+\begin{equation}
+    \hat{\mathbf{X}} = \mathbf{X} + \mathbf{K}
+                       \left(
+                       \mathbf{D} - \mathbf{H} \mathbf{X}
+                       \right)
+\end{equation}
+
+\begin{equation}
+    \mathbf{K} = \mathbf{Q} \mathbf{H}^T
+                 {\left(
+                    \mathbf{H} \mathbf{Q} \mathbf{H}^T
+                    + \mathbf{R}
+                 \right)} ^ {-1}
+\end{equation}
+
+\subsection{Different Types of Ensemble Kalman Filter}\label{sec:method:types}
+
+Talk about the different types of EnKF and the implications for ensemble size
+\citep{keller2018comparing}.
+
