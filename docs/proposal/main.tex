@@ -2,6 +2,7 @@
 
 \usepackage[sort&compress]{natbib}
 \usepackage[nottoc]{tocbibind}
+\usepackage{booktabs}
 
 \begin{document}
 
@@ -11,15 +12,35 @@
 
 \section{Title of Research Topic}\label{sec:title}
 
+Real-time Pedestrian Modelling: Implementing the Ensemble Kalman Filter for an
+Agent-Based Model
+
 \section{Research Questions and Statement}\label{sec:questions}
 
 %The research questions and statement should drop out and emerge from the review of the literature and the description of the topic in section b. 
 %Essentially this is an evaluation of how well the student has been able to distil the research into a set of solid research questions. 
 
+The work undertaken in this dissertation seeks to address the following research
+questions: Can the Ensemble Kalman Filter method of data assimilation be used to
+improve the accuracy with which an agent-based model simulates pedestrian
+movement given observational data.
+The Ensemble Kalman Filter is a method of sequentially combining two streams of
+data; in our case, we aim to combine the states predicted by our pedestrian
+model with synthetic data as a proof of concept.
+
+In order to answer the above question, the following objectives are set out:
+\begin{enumerate}
+    \item Develop a general Ensemble Kalman Filter class in Python.
+    \item Apply the Ensemble Kalman Filter to our pedestrian model.
+    \item Compare the accuracy with which the Ensemble Kalman Filter
+        implementation of the model simulates the pedestrian movement against
+        the base model without data assimilation.
+\end{enumerate}
+
 \section{Description of Research}\label{sec:research_descr}
 
-This section should describe the background to the research topic, provide a review of the relevant literature (methodological and or previous work in this domain) and should point towards research gaps that will be addressed by this thesis. 
-Essentially the student is being asked to demonstrate their understanding of the topic area, to show that they can summarise a body of research and to develop an implicit rationale for the need for their proposed research.
+%This section should describe the background to the research topic, provide a review of the relevant literature (methodological and or previous work in this domain) and should point towards research gaps that will be addressed by this thesis. 
+%Essentially the student is being asked to demonstrate their understanding of the topic area, to show that they can summarise a body of research and to develop an implicit rationale for the need for their proposed research.
 
 A better understanding of how people move around their environment is of great
 utility to both academics and policy-makers.
@@ -115,7 +136,8 @@ accuracy with respect to the true system.
 A large volume of work exists in which such techniques are applied to
 meteorological systems where the models are based on differential equations.
 Significantly less work exists in which data assimilation methods are applied to
-agent-based models --- in particular pedestrian models.
+agent-based models \citep{wang2017random} --- in particular pedestrian models
+\citep{wang2013data, rai2013behavior, wang2015data, ward2016dynamic}.
 This dissertation therefore aims to expand on the pre-existing work by
 implementing a data assimilation scheme known as the Ensemble Kalman Filter in
 conjunction with a relatively simple agent-based model of pedestrians crossing a
@@ -127,11 +149,39 @@ two-dimensional station from one side to the other.
 %The student should show their understanding of how the data analysis will allows the research aims / questions will be answered. 
 %The data should exist, it should be available to the study within the proposed timeframe, indications of communications between data holders and students should be included, and a realistic appraisal of contingency data should be considered.
 
+\begin{itemize}
+    \item Data assimilation generally
+    \item Ensemble Kalman Filter
+    \item What data is used? Synthetic data from the model
+    \item What is the model?
+\end{itemize}
+
 \section{Timetable of Programme of Work}\label{sec:timetable}
 
 %This should show a realistic plan of work for an August / September submission.
 
+The work for this dissertation will be undertaken based on the following
+timetable:
+\begin{itemize}
+    \item \textbf{6th May 2019}: Write code for general Ensemble Kalman Filter.
+    \item \textbf{15th May 2019}: Test Ensemble Kalman Filter on pedestrian model.
+    \item \textbf{24th May 2019}: First draft of dissertation.
+    \item \textbf{14th June 2019}: Complete dissertation.
+\end{itemize}
+
 \section{Risk Assessment}\label{sec:risk_ass}
+
+The following factors are perceived to be risks to the success of the project:
+\begin{itemize}
+    \item Time constraints (low risk, high impact): Plan to submit dissertation well in
+        advance, allowing plenty of time for any exceptional circumstances.
+    \item Lack of available data (low risk, high impact): Using synthetic data
+        from the pedestrian model, which are easily generated.
+    \item Lack of computing resources (low risk, medium impact): Initial test
+        indicate that code can be run on laptops; previous arrangements have
+        been made for access to the SEE server which provides a significant
+        boost in computational performance if required.
+\end{itemize}
 
 %This should be a general assessment of the possible risks, their likelihood, the strength of their impact and any possible mitigation strategies. 
 %Obviously not every eventuality can be considered but general risks to the successful completion of the project should be identified and considered.
