@@ -1,0 +1,142 @@
+\documentclass[12pt, twoside, a4paper]{article}
+
+\usepackage[sort&compress]{natbib}
+\usepackage[nottoc]{tocbibind}
+
+\begin{document}
+
+\title{Research Proposal}
+\author{Keiran Suchak --- 200888140}
+\maketitle
+
+\section{Title of Research Topic}\label{sec:title}
+
+\section{Research Questions and Statement}\label{sec:questions}
+
+%The research questions and statement should drop out and emerge from the review of the literature and the description of the topic in section b. 
+%Essentially this is an evaluation of how well the student has been able to distil the research into a set of solid research questions. 
+
+\section{Description of Research}\label{sec:research_descr}
+
+This section should describe the background to the research topic, provide a review of the relevant literature (methodological and or previous work in this domain) and should point towards research gaps that will be addressed by this thesis. 
+Essentially the student is being asked to demonstrate their understanding of the topic area, to show that they can summarise a body of research and to develop an implicit rationale for the need for their proposed research.
+
+A better understanding of how people move around their environment is of great
+utility to both academics and policy-makers.
+Such knowledge can be made use of in the contexts of urban planning, event
+management and emergency response, particularly when considering urban
+environments.
+Furthermore, this may be of use to those interested in the social issues of
+mobility, inclusivity and accessibility of opportunities.
+
+When considering such concepts, investigators often make use of modelling
+techniques.
+At their most fundamental, models represent our understanding of the system that
+we are studying --- an understanding that may not be perfect
+\citep{stanislaw1986tests}.
+There exist modelling techniques for the simulation of how pedestrians move
+around urban spaces.
+However, these methods exist largely in isolation of the real-world --- that is
+to say that whilst the simulations aim to reflect the real-world, there is no
+method by which we can incorporate up-to-date observations into these models to
+stop their divergence from reality.
+
+Simulating pedestrian behaviour is often undertaken at a micro-scale, with such
+models typically aiming to model at the individual level or on a spatially
+fine-grained grid \citep{burstedde2001simulation}.
+One of the most prevalent simulation methods in this field is that of
+Agent-Based Modelling.
+Such methods consist of two key components: agents and environments.
+In an Agent-Based Model, we prescribe sets of rules by which individuals
+interact with each other and their local environment; as interactions take
+place on the micro-scale, we typically observe the emergence of structure at the
+macro-scale such as crowding \citep{batty2003discrete} or lane formation
+\citep{liu2014agent}.
+The evaluation of these rules is often not deterministic and instead introduces
+some element of randomness; these stochastic elements aim to emulate the
+variability of human behaviour.
+The introduction of such randomness in conjunction with an imperfect
+understanding of the phenomena at play, however, typically result in simulation
+runs diverging from the real system.
+
+In constructing their models, agent-based modellers undertake a development
+process that involves model verification, validation and calibration.
+We can take these to mean the following:
+\begin{itemize}
+    \item \textbf{Model verification}: The process of ensuring that the
+        implementation is an accurate representation of the model
+        \citep{xiang2005verification}.
+    \item \textbf{Model validation}: The process of ensuring that the chosen
+        model is an accurate representation of the phenomenon that we wish to
+        study \citep{crooks2008key}.
+    \item \textbf{Model calibration}: The process of searching for model
+        parameter values such that we can achieve model validation
+        \citep{thiele2014facilitating}.
+\end{itemize}
+Beyond this, modellers also make efforts to ensure that the initial model
+conditions are realistic by setting them based on historical data.
+
+The practices of validation, calibration and setting initial model states based
+on historical data are appropriate for offline evaluations such as testing
+designs of new buildings or experimenting with different individual behaviours;
+however, when aiming to simulate events in real-time, this simple delays the
+inevitable divergence of the model from the real system.
+Furthermore, model parameters may be transient and thus require to be updated as
+time passes and the dynamics evolve.
+
+Given the apparently inevitable divergence of stochastic simulations from the
+real system that they aim to model, one may alternatively turn to big data.
+Data is now being generated in higher volumes and at greater velocity than ever
+before \citep{chen2014big}; however there also exist issues with observational
+data from such systems.
+Whilst models typically allow us to simulate a whole system, observations are
+typically sparse in either time or space (or both); this is to say that we
+observations rarely provide complete coverage of events.
+We therefore seek a solution whereby we can integrate up-to-date observations
+into our models as the models continue to simulate the system.
+
+One of the methods by which we can combine knowledge represented by our model
+with observations as they become available is through data assimilation
+techniques, which are most commonly used in the field of numerical weather
+prediction \citep{kalnay2003atmospheric}.
+Such techniques are typically made up of two steps:
+\begin{enumerate}
+    \item \textbf{Predict}: Run the model forward, estimating the state of the
+        system, until new observations become available.
+    \item \textbf{Update}: Upon receipt of new observations, combine the model's
+        estimate of the system state with the new data.
+\end{enumerate}
+These steps are repeated iteratively in a cycle.
+It is important to note that just as there is error associated with the model,
+we also acknowledge that there is observational error associated with the data.
+The aim of incorporating the observations into the model is to improve the model
+accuracy with respect to the true system.
+
+A large volume of work exists in which such techniques are applied to
+meteorological systems where the models are based on differential equations.
+Significantly less work exists in which data assimilation methods are applied to
+agent-based models --- in particular pedestrian models.
+This dissertation therefore aims to expand on the pre-existing work by
+implementing a data assimilation scheme known as the Ensemble Kalman Filter in
+conjunction with a relatively simple agent-based model of pedestrians crossing a
+two-dimensional station from one side to the other.
+
+\section{Description of Methodology and Data}\label{sec:method_descr}
+
+%This section should describe the data and methods that will be used as part of this study. 
+%The student should show their understanding of how the data analysis will allows the research aims / questions will be answered. 
+%The data should exist, it should be available to the study within the proposed timeframe, indications of communications between data holders and students should be included, and a realistic appraisal of contingency data should be considered.
+
+\section{Timetable of Programme of Work}\label{sec:timetable}
+
+%This should show a realistic plan of work for an August / September submission.
+
+\section{Risk Assessment}\label{sec:risk_ass}
+
+%This should be a general assessment of the possible risks, their likelihood, the strength of their impact and any possible mitigation strategies. 
+%Obviously not every eventuality can be considered but general risks to the successful completion of the project should be identified and considered.
+
+\bibliographystyle{agsm}
+\bibliography{references}
+
+\end{document}
