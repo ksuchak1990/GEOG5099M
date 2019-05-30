@@ -21,10 +21,10 @@ Agent-Based Model
 %Essentially this is an evaluation of how well the student has been able to distil the research into a set of solid research questions. 
 
 The work undertaken in this dissertation seeks to address the following research
-questions: Can the Ensemble Kalman Filter method of data assimilation be used to
+question: Can the Ensemble Kalman Filter method of data assimilation be used to
 improve the accuracy with which an agent-based model simulates pedestrian
 movement given observational data.
-The Ensemble Kalman Filter is a method of sequentially combining two streams of
+The Ensemble Kalman Filter is a method of combining two streams of
 data; in our case, we aim to combine the states predicted by our pedestrian
 model with synthetic data as a proof of concept.
 
@@ -42,11 +42,9 @@ In order to answer the above question, the following objectives are set out:
 %This section should describe the background to the research topic, provide a review of the relevant literature (methodological and or previous work in this domain) and should point towards research gaps that will be addressed by this thesis. 
 %Essentially the student is being asked to demonstrate their understanding of the topic area, to show that they can summarise a body of research and to develop an implicit rationale for the need for their proposed research.
 
-A better understanding of how people move around their environment is of great
-utility to both academics and policy-makers.
-Such knowledge can be made use of in the contexts of urban planning, event
-management and emergency response, particularly when considering urban
-environments.
+Knowledge of how people move around their environment can be made use of by both
+academics and policy-makers in the contexts of urban planning, event management
+and emergency response, particularly when considering urban environments.
 Furthermore, this may be of use to those interested in the social issues of
 mobility, inclusivity and accessibility of opportunities.
 
@@ -138,10 +136,16 @@ meteorological systems where the models are based on differential equations.
 Significantly less work exists in which data assimilation methods are applied to
 agent-based models \citep{wang2017random} --- in particular pedestrian models
 \citep{wang2013data, rai2013behavior, wang2015data, ward2016dynamic}.
+Of the aforementioned studies, \citet{wang2013data}, \citet{rai2013behavior} and
+\citet{wang2015data} focus on implementing a data assimilation scheme known as
+the Particle Filter, whereas \citet{ward2016dynamic} focus on implementing
+another scheme known as the Ensemble Kalman Filter to a very simple model;
+indeed, the latter piece of work admits that ``the model used is model is
+relatively simple in comparison with typical ABMs and is not programmed in an
+object orientated framework''.
 This dissertation therefore aims to expand on the pre-existing work by
-implementing a data assimilation scheme known as the Ensemble Kalman Filter in
-conjunction with a relatively simple agent-based model of pedestrians crossing a
-two-dimensional station from one side to the other.
+implementing the Ensemble Kalman Filter in conjunction with an agent-based model
+of pedestrians crossing a two-dimensional station from one side to the other.
 
 \section{Description of Methodology and Data}\label{sec:method_descr}
 
@@ -149,12 +153,97 @@ two-dimensional station from one side to the other.
 %The student should show their understanding of how the data analysis will allows the research aims / questions will be answered. 
 %The data should exist, it should be available to the study within the proposed timeframe, indications of communications between data holders and students should be included, and a realistic appraisal of contingency data should be considered.
 
+%\begin{itemize}
+    %\item Data assimilation generally
+    %\item Ensemble Kalman Filter
+    %\item What data is used? Synthetic data from the model
+    %\item What is the model?
+%\end{itemize}
+
+This dissertation focuses on the application of data assimilation schemes to
+agent-based models, in particular considering the Ensemble Kalman Filter (EnKF),
+which is a method derived from the Kalman Filter (KF).
+The aim of the KF is to combine two streams of information based on their
+uncertainties in order to produce an estimate for which the uncertainty is
+minimised \citep{kalman1960new}.
+In doing so, it sequentially evolves the state and the covariance matrix (which
+characterises the state uncertainty).
+It provides an optimal solution in scenarios that fulfil the following
+conditions \citep{mandel2009brief}:
 \begin{itemize}
-    \item Data assimilation generally
-    \item Ensemble Kalman Filter
-    \item What data is used? Synthetic data from the model
-    \item What is the model?
+    \item The model is linear,
+    \item The uncertainties are normally distributed.
 \end{itemize}
+
+These criteria are not always fulfilled; indeed, when considering agent-based
+models, we often find that the models are non-linear.
+Furthermore, as models grow in dimension, so does the cost of evolving the
+covariance matrix --- this quickly becomes intractable for larger models.
+
+In order to address some of these issues, the Ensemble Kalman Filter was
+developed \citep{evensen2003ensemble, evensen2009ensemble}.
+Critically, this approach allows us to maintain a non-linear model
+\citep{wikle2007bayesian}.
+The EnKF acts as an approximation of the KF.
+This approximation is achieved by using an ensemble of sample state vectors to
+represent the state distribution.
+As such, the model state is represented by a matrix, $\mathbf{X}$, as follows:
+\begin{equation}
+    \mathbf{X} = \left[ \mathbf{x}_1, \ldots, \mathbf{x}_N \right],
+\end{equation}
+where the state ensemble matrix, $\mathbf{X}$, consists of $N$ state vectors,
+$\mathbf{x}_i$ ($\forall i \in (1, N)$.
+Similarly, the observations are represented by a matrix, $\mathbf{D}$, as
+follows:
+\begin{equation}
+    \mathbf{D} = \left[ \mathbf{d}_1, \ldots, \mathbf{d}_N \right],
+\end{equation}
+with each member of the data ensemble matrix, $\mathbf{D}$, being the sum of the
+original observation, $\mathbf{d}$, and a random vector,
+$\mathbf{\varepsilon}_i$:
+\begin{equation}
+    \mathbf{d}_i = \mathbf{d} + \mathbf{\varepsilon}_i.
+\end{equation}
+The random vector is drawn from an unbiased normal distribution:
+\begin{equation}
+    \mathbf{\varepsilon} \sim \mathcal{N} 
+                              \left( 0, \mathbf{R} \right),
+\end{equation}
+where $\mathbf{R}$ is the data covariance matrix, representing the uncertainty
+in the observations.
+
+The state of the system, $\mathbf{X}$, is iteratively forecast by the model until
+new observations are received; upon receipt of new data, the updated state
+ensemble matrix, $\hat{\mathbf{X}}$, is given by:
+\begin{equation}
+    \hat{\mathbf{X}} = \mathbf{X} + \mathbf{K}
+                       \left(
+                       \mathbf{D} - \mathbf{H} \mathbf{X}
+                       \right),
+\end{equation}
+where $\mathbf{K}$ is known as the Kalman gain matrix and $\mathbf{H}$ is known
+as the observation matrix.
+The observation matrix is responsible for converting the model state into
+observation state space.
+The Kalman gain matrix dictates the weighting applied to difference between the
+observations and the model state in updating the state, and is given by:
+\begin{equation}
+    \mathbf{K} = \mathbf{Q} \mathbf{H}^T
+                 {\left(
+                    \mathbf{H} \mathbf{Q} \mathbf{H}^T + \mathbf{R}
+                 \right)} ^ {-1},
+\end{equation}
+where $\mathbf{Q}$ is the covariance matrix representing the uncertainty in the
+model state.
+The Kalman gain matrix therefore weights the update based on the proportion of
+the total uncertainty contributed by the model uncertainty.
+
+This scheme will be applied to an agent-based model which simulates the motions
+of pedestrians moving in two dimensions across a station from one side to the
+other
+\footnote{https://github.com/Urban-Analytics/dust/tree/master/Projects/StationSim-py}.
+The data used for assimilation will be synthetic, and will be generated by the
+same model.
 
 \section{Timetable of Programme of Work}\label{sec:timetable}
 
