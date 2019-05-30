@@ -1,10 +1,14 @@
 \documentclass[12pt, twoside, a4paper]{article}
 
-\usepackage[sort&compress]{natbib}
-\usepackage[nottoc]{tocbibind}
 \usepackage{booktabs}
+\usepackage[sort&compress]{natbib}
+\usepackage{pdfpages}
+
+\linespread{1.5}
 
 \begin{document}
+
+\includepdf[pages=-]{cover_sheet.pdf}
 
 \title{Research Proposal}
 \author{Keiran Suchak --- 200888140}
@@ -30,7 +34,7 @@ model with synthetic data as a proof of concept.
 
 In order to answer the above question, the following objectives are set out:
 \begin{enumerate}
-    \item Develop a general Ensemble Kalman Filter class in Python.
+    \item Develop a general Ensemble Kalman Filter computational class.
     \item Apply the Ensemble Kalman Filter to our pedestrian model.
     \item Compare the accuracy with which the Ensemble Kalman Filter
         implementation of the model simulates the pedestrian movement against
@@ -45,7 +49,7 @@ In order to answer the above question, the following objectives are set out:
 Knowledge of how people move around their environment can be made use of by both
 academics and policy-makers in the contexts of urban planning, event management
 and emergency response, particularly when considering urban environments.
-Furthermore, this may be of use to those interested in the social issues of
+Furthermore, such knowledge may be of use to those interested in the social issues of
 mobility, inclusivity and accessibility of opportunities.
 
 When considering such concepts, investigators often make use of modelling
@@ -53,9 +57,8 @@ techniques.
 At their most fundamental, models represent our understanding of the system that
 we are studying --- an understanding that may not be perfect
 \citep{stanislaw1986tests}.
-There exist modelling techniques for the simulation of how pedestrians move
-around urban spaces.
-However, these methods exist largely in isolation of the real-world --- that is
+Whilst there exist modelling techniques for the simulation of how pedestrians
+move around urban spaces, they exist largely in isolation of the real-world --- that is
 to say that whilst the simulations aim to reflect the real-world, there is no
 method by which we can incorporate up-to-date observations into these models to
 stop their divergence from reality.
@@ -79,28 +82,17 @@ understanding of the phenomena at play, however, typically result in simulation
 runs diverging from the real system.
 
 In constructing their models, agent-based modellers undertake a development
-process that involves model verification, validation and calibration.
-We can take these to mean the following:
-\begin{itemize}
-    \item \textbf{Model verification}: The process of ensuring that the
-        implementation is an accurate representation of the model
-        \citep{xiang2005verification}.
-    \item \textbf{Model validation}: The process of ensuring that the chosen
-        model is an accurate representation of the phenomenon that we wish to
-        study \citep{crooks2008key}.
-    \item \textbf{Model calibration}: The process of searching for model
-        parameter values such that we can achieve model validation
-        \citep{thiele2014facilitating}.
-\end{itemize}
+process that involves model verification \citep{xiang2005verification},
+validation \citep{crooks2008key} and calibration \citep{thiele2014facilitating}.
 Beyond this, modellers also make efforts to ensure that the initial model
 conditions are realistic by setting them based on historical data.
 
 The practices of validation, calibration and setting initial model states based
 on historical data are appropriate for offline evaluations such as testing
 designs of new buildings or experimenting with different individual behaviours;
-however, when aiming to simulate events in real-time, this simple delays the
+however, when aiming to simulate events in real-time, this simply delays the
 inevitable divergence of the model from the real system.
-Furthermore, model parameters may be transient and thus require to be updated as
+Furthermore, model parameters may be transient and thus require updating as
 time passes and the dynamics evolve.
 
 Given the apparently inevitable divergence of stochastic simulations from the
@@ -109,7 +101,7 @@ Data is now being generated in higher volumes and at greater velocity than ever
 before \citep{chen2014big}; however there also exist issues with observational
 data from such systems.
 Whilst models typically allow us to simulate a whole system, observations are
-typically sparse in either time or space (or both); this is to say that we
+typically sparse in either time or space (or both); this is to say that
 observations rarely provide complete coverage of events.
 We therefore seek a solution whereby we can integrate up-to-date observations
 into our models as the models continue to simulate the system.
@@ -140,9 +132,9 @@ Of the aforementioned studies, \citet{wang2013data}, \citet{rai2013behavior} and
 \citet{wang2015data} focus on implementing a data assimilation scheme known as
 the Particle Filter, whereas \citet{ward2016dynamic} focus on implementing
 another scheme known as the Ensemble Kalman Filter to a very simple model;
-indeed, the latter piece of work admits that ``the model used is model is
-relatively simple in comparison with typical ABMs and is not programmed in an
-object orientated framework''.
+indeed, the latter piece of work admits that the model used is ``relatively
+simple in comparison with typical ABMs and is not programmed in an object
+orientated framework''.
 This dissertation therefore aims to expand on the pre-existing work by
 implementing the Ensemble Kalman Filter in conjunction with an agent-based model
 of pedestrians crossing a two-dimensional station from one side to the other.
@@ -250,7 +242,7 @@ same model.
 %This should show a realistic plan of work for an August / September submission.
 
 The work for this dissertation will be undertaken based on the following
-timetable:
+deadlines:
 \begin{itemize}
     \item \textbf{6th May 2019}: Write code for general Ensemble Kalman Filter.
     \item \textbf{15th May 2019}: Test Ensemble Kalman Filter on pedestrian model.
@@ -277,5 +269,8 @@ The following factors are perceived to be risks to the success of the project:
 
 \bibliographystyle{agsm}
 \bibliography{references}
+
+\includepdf[pages=-]{risk_declaration_filled.pdf}
+
 
 \end{document}
