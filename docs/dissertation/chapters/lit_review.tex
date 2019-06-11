@@ -1,6 +1,9 @@
 \chapter{Literature Review}\label{ch:lit_rev}
 
-\section{Model Calibration}\label{sec:lit_rev:calibration}
+%\begin{itemize}
+    %\item DATA ASSIMILATION IN GENERAL
+    %\item HOW THIS RELATES TO CALIBRATION
+%\end{itemize}
 
 As touched upon in Chapter \ref{ch:intro}, the process of developing an
 agent-based model typically involves some form of model calibration.
@@ -9,25 +12,256 @@ such that it best fits the particular situation that we are seeking to model
 \citep{crooks2012introduction}.
 There are a large number of different manners in which we can calibrate
 agent-based models \citep{thiele2014facilitating}.
+These approaches typically involve making use of real-world data to estimate the
+parameters and initial state of the model; this is, however, undertaken once
+prior to running the model.
+
+In some situations, we aim to simulate events in real-time (or close to
+real-time).
+In such situations, we are often able to observe the evolution of
+the real-world system which we seek to model and consequently may wish to use
+this information to recalibrate the model.
+This would, however, require that we stop the simulation, undertake calibration,
+and restart the model.
+We therefore seek an approach that allows us to incorporate observations of the
+system whilst simulating the system --- data assimilation.
+
+This Chapter will therefore seek to provide a basic overview of data
+assimilation, along with some coverage of the attempts that have been made to
+implement such techniques to agent-based models that simulate urban systems.
+
+\section{Data Assimilation}\label{sec:method:da}
 
 \begin{itemize}
-    \item MORE ABOUT MODEL CALIBRATION
-\end{itemize}
-
-\section{Data Assimilation}\label{sec:lit_rev:da}
-
-\begin{itemize}
-    \item DATA ASSIMILATION IN GENERAL
-    \item HOW THIS RELATES TO CALIBRATION
+    \item Origins of filtering with Wiener filter, 1950. Only applies for
+        stationary signals.
+    \item Kalman-Bucy 1961
+    \item Stratonovich 1968
+    \item Jazwinski 1970
+    \item 
 \end{itemize}
 
 The process of data assimilation involves making use of observations along with
 prior knowledge (which, in our case, is encoded in a model) to produce
 increasingly accurate estimates of variables of interest.
 Such a process can be achieved through a Bayesian filtering approach
-\citep{grewal1995kalman}.
+\citep{jazwinski1970mathematics, bar2004estimation}.
 
-\subsection{Data Assimilation with Agent-Based Models}\label{sub:lit_rev:da:abm}
+Under such a framework, the updating of the model state is undertaken on the
+basis of Bayes Rule (for which a derivation is provided in Appendix
+\ref{ch:bayes}):
+\begin{equation}
+    P(A|B) = \frac{P(B|A) P(A)}{P(B)}
+\end{equation}
+Bayes Rule is made up of four components:
+\begin{enumerate}
+    \item $P \left( A \right)$: The probability of $A$, known as the
+        \textbf{Prior}.
+    \item $P \left( A|B \right)$: The probability of $A$ given $B$, known as the
+        \textbf{Posterior}.
+    \item $P \left( B|A \right)$: The probability of $B$ given $A$, known as the
+        \textbf{Likelihood}.
+    \item $P \left( B \right)$: The probability of $B$, known as the
+        \textbf{Marginal Likelihood}.
+\end{enumerate}
+When applying this notation to the problem at hand, the components become:
+\begin{enumerate}
+    \item \textbf{Prior}, $P(\mathbf{x})$: The probability distribution
+        representing the prior state of the model.
+    \item \textbf{Posterior}, $P(\mathbf{x}|\mathbf{d})$: The probability
+        distribution representing the updated state of the model in light of the
+        observed data, that is to say the probability of the model state given
+        the data.
+    \item \textbf{Likelihood}, $P(\mathbf{d}|\mathbf{x})$: The probability
+        distribution of the observed data given the model state.
+    \item \textbf{Marginal Likelihood}, $P(\mathbf{d})$: The probability
+        distribution representing the observed data.
+\end{enumerate}
+With the above notation, Bayes Rule becomes:
+\begin{equation}
+    P \left( \mathbf{x} | \mathbf{d} \right) =
+       \frac{P \left( \mathbf{d} | \mathbf{x} \right)
+             P \left( \mathbf{x} \right)}{P \left( \mathbf{d} \right)} 
+\end{equation}
+The aim of a data assimilation scheme therefore becomes to provide an update to
+the  state in the form of the posterior, $P \left( \mathbf{x} | \mathbf{d}
+\right)$, given new observations, $P \left( \mathbf{d} \right)$.
+
+There exist a number of different schemes for tackling this problem which are
+often divided into two groups:
+\begin{enumerate}
+    \item \textbf{Sequential}: What does this mean and some examples, Kalman
+        Filter (and variations thereof), Particle Filter.
+    \item \textbf{Variational}: What does this mean and some examples, 3D-VAR,
+        4D-VAR.
+\end{enumerate}
+
+Of the work that currently exists wherein investigators attempt to apply data
+assimilation schemes to agent-based models, most make use of sequential schemes. 
+
+\section[Application of Data Assimilation to Agent-Based Models]{Application of Sequential Data Assimilation to Agent-Based
+Models}\label{sec:lit_rev:da_abm}
+
+%Agent-based simulation is useful for studying people's movement in smart
+%environment.
+%Existing agent-based simulations are typically used as offline tools that help
+%system design.
+%They are not dynamically data-driven because they do not utilise any real time
+%sensor data of the environment.
+%In this paper, we present a method that assimilates real time sensor data into
+%an agent-based simulation model.
+%The goal of data assimilation is to provide inference of people's occupancy
+%information in the smart environment, and thus lead to more accurate simulation
+%results.
+%We use particle filters to carry out the data assimilation and present some
+%experiment results, and discuss how to extend this work for more advanced data
+%assimilation in agent-based simulation of smart environment.
+
+%\begin{itemize}
+    %\item Environment:
+    %\item Data source: synthetic data generated by the model.
+    %\item Type of data: Sensors report presence of agent at position.
+    %\item Method: Particle filter
+    %\item Experiments run: different routing types, different number of
+        %particles, single agent, two agents (set up such that agents are less
+        %likely to interact).
+    %\item Findings:
+%\end{itemize}
+
+One of earliest pieces of work undertaken on the application of data
+assimilation schemes to agent-based models of urban environments was by
+\citet{wang2013data}.
+In this work, they simulate a smart office environment with people in it --- a
+scenario that is becoming increasingly common with the advent of the Internet of
+Things.
+The aim of the work was to make use of real-time data in conjunction with the
+agent-based simulation to provide more accurate estimates of the occupancy of
+the environment.
+This was achieved using the Particle Filter method of data assimilation; the
+method was chosen as it did not require the system to be Gaussian.
+The particle filter method operates by holding an ensemble of realisations of
+the simulation, each of which are evolved forward over time between
+observations; when observations are received, the particle states are weighted
+and the new state is obtained by sampling from these weighted particles.
+The observations used were synthetic data generated by the agent-based model,
+aiming to emulate motion sensors which would provide a binary response of
+whether a person was present in a given location.
+
+The work undertaken consisted of two experiments --- firstly simulating single
+agent in the environment, then going on to simulate two agents in the same
+environment.
+In the case if the first experiment, the agent was simulated with two different
+routing behaviours; for the first routing behaviour, the agent move forward
+sequentially through a series of waypoints, whilst for the second routing
+behaviour, the agent moves through a series of waypoints before turning back to
+return to its initial position.
+In this experiment, it was found that the simulation error decreased when the
+agent was detected at each of the sensors for both routing behaviours with error
+growing between detections; this is as expected --- it confirms that the
+simulation becomes more accurate with the addition of further information
+regarding the system.
+In the case of the second routing behaviour, the simulation error also grew
+following the agent's turn to head back to its origin.
+In the second experiment, they aimed to simulate two agents in the same
+environment, with the two agents maintaining spatial separation.
+This simulation was run a number of times for different numbers of particles
+with a view to establishing a relationship between the number of particles and
+simulation accuracy.
+It was found that as the number of particles was increased (through $400$,
+$800$, $1200$ and $1600$), the simulation error decreased.
+It was also found, however, that the experiments with fewer particles ($400$ and
+$800$) struggled to converge, with the smaller number of particles unable to
+provide sufficient coverage of the state space.
+It was therefore noted that as the number of agents was increased, the method
+was likely to struggle.
+
+This final issue may be solved by an increase in the number of particles;
+however, this comes with an attached increase  in the computational cost (both
+in terms of compute time and space).
+The implementation of the particle filter requires that a realisation of the
+model be kept for each particle, resulting in growing memory requirements as
+the number of particles are increased.
+Furthermore, each particle is required to evolve the model for each time-step,
+resulting in an increasing computational cost.
+
+\subsection{Wang 2015}
+
+Agent-based simulations are useful for studying people's movement and to help
+making decisions in situations like emergency evacuation in smart environments.
+These agent-based simulations are typically used as offline tools and do not
+assimilate real time data from the environment.
+With more and more smart buildings equipped with sensor devices, it is possible
+to utilise real time sensor data t dynamically inform the simulations to
+improve simulation results.
+In this paper, we propose a method to assimilate real time sensor data in
+agent-based simulations of smart environments based on particle filters.
+The data assimilations aims to estimate the system state, i.e. people's location
+information in real time, and use the estimated states to provide initial
+conditions for more accurate simulation/prediction of the system dynamics in the
+future.
+We develop a particle filter-based data assimilation framework and propose a new
+resampling method named as component set resampling to improve data assimilatoin
+for multiple agents.
+The proposed framework and method are demonstrated and evaluated through
+experiments using a sparsely populated smart environment.
+
+\subsection{Rai 2013}
+
+Agent-based simulation is useful for studying human activity and their
+interactions in smart environments.
+Existing agent-based simulations are mostly offline tools that do not utilise
+real time information of smart environments.
+In previous work we developed a particle filter-based data assimilation method
+to assimilate real time sensor data from the environment into an agent-based
+simulation model.
+This paper extends the previous work by presenting a framework of behaviour
+pattern informed data assimilation.
+We describe the structure of this framework and focus on the task of behaviour
+pattern detection using Hidden Markov Model.
+We apply behaviour pattern detection to a smart office case study example and
+discuss how the detected behaviour pattern can inform the data assimilation in
+agent-based simulation of smart environments.
+
+\subsection{Ward 2016}
+
+A widespread approach to investigating the dynamical behaviour of complex socia
+systems is via agent-based models.
+In this paper, we describe how such models can be dynamically calibrated using
+the ensemble kalman filter, a standard method of data assimilation.
+Our goal is twofold.
+First, we want to present the enkf in a simple setting for the benefit of abm
+practitioners who are unfamiliar with it.
+Second, we want to illustrate to data assimilation experts the value of using
+such methods in the context of abms of complex social systems and the new
+challenges these types of model present.
+We work towards these goals within the context of a simple question of practical
+value: how many people are there in Leeds (or any other major city) right now?
+We build a hierarchy of exemplar models that we use to demonstrate how to apply
+the enkf and calibrate these using open data of footfall counts in Leeds.
+
+\subsection{Wang 2017}
+
+Maritime piracy is posing a genuine threat to maritime transport.
+The main purpose of simulation is to predict behaviours of many actual systems,
+and it has been successfully applied in many fields.
+But the application of simulation in the maritime domain is still scarce.
+The rapid development of network and measurement technologies brings about
+higher accuracy and better availability of online measurements.
+This makes the simulation paradigm names as dynamic data driven simulation
+increasingly popular.
+It can assimilation the online measurements into the running simulation models
+and ensure much more accurate prediction of the complex systems under study.
+In this paper, we study how to utilise the online measurements in the agent
+based simulation of the maritime pirate activity.
+A new random finite set based data assimilation algorithm is proposed to
+overcome the limitations of the conventional vectors based data assimilation
+algorithms.
+The random finite set based general data model, measurement model, and
+simulation model are introduced to support the proposed algorithm.
+The details of the proposed algorithm are presented in the context of agent
+based simulation of maritime pirate activity.
+Two groups of experiments are used to practically prove the effectiveness and
+superiority of the proposed algorithm.
 
 \begin{itemize}
     \item \cite{ward2016dynamic} --- model of pedestrians on Briggate, a 1-D
@@ -44,21 +278,29 @@ Such a process can be achieved through a Bayesian filtering approach
         this have any relevance?
 \end{itemize}
 
-\subsection{Data Assimilation with Cellular Automata}\label{sub:lit_rev:da:ca}
+%\subsection{Data Assimilation with Cellular Automata}\label{sub:lit_rev:da:ca}
 
 Whilst this dissertation focuses on the application of data assimilation methods
 to agent-based models, there also exists a body of work that makes use of the
-same methods in conjunction with cellular automata.
+same methods in conjunction with cellular automata \citep{li2012assimilating,
+li2017exploring}.
+Cellular automata can be thought of as a specific case of agent-based models in
+which the environment is characterised by a discrete grid, with the occupancy of
+each grid cell being updated over time based on the state of its neighbouring
+cells.
 
-\begin{itemize}
-    \item WHAT ARE CELLULAR AUTOMATA
-    \item HOW DO THEY RELATE TO ABMS?
-    \item WHAT IS THE POINT OF INCLUDING THIS?
-\end{itemize}
+%\begin{itemize}
+    %\item WHAT ARE CELLULAR AUTOMATA
+    %\item HOW DO THEY RELATE TO ABMS?
+    %\item WHAT IS THE POINT OF INCLUDING THIS?
+%\end{itemize}
 
-\begin{itemize}
-    \item \cite{li2017exploring} --- CA for urban land use, using enkf.
-    \item \cite{li2012assimilating} --- CA for urban land use, using enkf.
-    \item 
-\end{itemize}
+%\begin{itemize}
+    %\item \cite{li2017exploring} --- CA for urban land use, using enkf.
+    %\item \cite{li2012assimilating} --- CA for urban land use, using enkf.
+    %\item 
+%\end{itemize}
 
+\section{Summary}\label{sec:lit_rev:summary}
+
+Drawing all of the information together.
