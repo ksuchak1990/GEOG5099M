@@ -1,55 +1,40 @@
 \chapter{Method}\label{ch:method}
 
-\begin{itemize}
-    \item Intro to data assimilation
-    \item What is data assimilation?
-    \item Where does it come from?
-    \item What is the point?
-    \item What types of data assimilation are available to us?
-    \item Which one are we going to use?
-\end{itemize}
-
-The updating of the model state is undertaken on the basis of Bayes Rule:
-\begin{equation}
-    P(A|B) = \frac{P(B|A) P(A)}{P(B)}
-\end{equation}
-Bayes Rule is made up of four components:
-\begin{enumerate}
-    \item $P \left( A \right)$: Prior
-    \item $P \left( A|B \right)$: Posterior
-    \item $P \left( B|A \right)$: Likelihood
-    \item $P \left( B \right)$: Marginal likelihood
-\end{enumerate}
-
-Then let's frame our problem notationally --- this is what Bayes theorem looks
-like for our situation:
-\begin{equation}
-    P \left( \mathbf{x} | \mathbf{d} \right) =
-       \frac{P \left( \mathbf{d} | \mathbf{x} \right)
-             P \left( \mathbf{x} \right)}{P \left( \mathbf{d} \right)} 
-\end{equation}
-In this case, each of the components are taken to mean
-\begin{enumerate}
-    \item Prior: The probability of the model state
-    \item Posterior: The probability of the model state given the data
-    \item Likelihood: The probability of the data given the model state
-    \item Marginal likelihood: The probability of the data
-\end{enumerate}
+As summarised in Chapter \ref{ch:lit_rev}, there exist a number of different
+data assimilation schemes, many of which are used extensively in fields such as
+numerical weather prediction, ... and ...
+Such methods, however, have been sparsely used in the field of real-time urban
+simulation and as such this investigation attempts to build upon the existing
+work by implementing the Ensemble Kalman Filter in conjunction with a pedestrian
+agent-based model.
+This chapter therefore seeks to outline the method used in this investigation --- the
+Ensemble Kalman Filter. 
+As shall be explained, the Ensemble Kalman Filter is an approximation of the
+Kalman Filter, and as such some attention will first be given to the original
+Kalman Filter, followed by an explanation of the Ensemble Kalman Filter along
+with the innovations that it incorporates.
 
 \section{Kalman Filter}\label{sec:method:kf}
 
-The Kalman Filter \citep{kalman1960new} is the best linear unbiased estimator,
-minimising posterior mean squared error.
+One of the earliest forms of Bayesian filtering is known as Wiener filtering
+\citep{wiener1950extrapolation}, which is used in the field of signal
+processing.
+The subsequent development of the Kalman Filter \citep{kalman1960new,
+kalman1961new}, however, is the foundation on which this work is based.
+The Kalman Filter is a sequential data assimilation scheme which updates the
+state and covariance matrix, weighted based on the uncertainty in the model
+forecasts and the observation uncertainty with a view to minimising the
+posterior mean squared error.
 
 \begin{itemize}
-    \item What is the Kalman Filter?
-    \item How does it work? Sequential data assimilation to update state and
-        covariance matrix, weighted based on model forecasts and observations.
-    \item When is it good? Optimal solution for linear model and Gaussian
-        errors.
     \item When is it bad?
     \item What can we do to improve it?
 \end{itemize}
+
+\begin{enumerate}
+    \item Predict
+    \item Update
+\end{enumerate}
 
 \section{Ensemble Kalman Filter}\label{sec:method:enkf}
 
@@ -60,11 +45,13 @@ Problems with the Kalman Filter:
     \item Cost of evolving covariance matrix
 \end{itemize}
 
-In order address some of these problems, the Ensemble Kalman Filter was
-developed \citep{evensen2003ensemble,
-evensen2009ensemble}, which acts as an approximation of the Kalman Filter.
-This approximation is achieved by using an ensemble of sample state vectors to
-represent the state distribution.
+In order to address some of these problems, the Ensemble Kalman Filter was
+developed \citep{evensen2003ensemble, evensen2009ensemble}, which acts as an
+approximation of the Kalman Filter.
+This approximation is achieved through a Monte Carlo approach of using an
+ensemble of sample state vectors to represent the state distribution; this
+development mirrors the recent incorporation of Monte Carlo methods in the field
+of Bayesian statistics \citep{wikle2007bayesian}.
 As such, the state is represented as follows:
 \begin{equation}
     \mathbf{X} = \left[ \mathbf{x}_1, \ldots, \mathbf{x}_N \right]
@@ -72,6 +59,11 @@ As such, the state is represented as follows:
 \end{equation}
 where the state ensemble matrix, $\mathbf{X}$, consists of $N$ state vectors,
 $\mathbf{x}_i$.
+The mean state vector, $\bar{\mathbf{x}}$, can be found by averaging over the
+ensemble:
+\begin{equation}
+    \bar{\mathbf{x}} = \sum_{i = 1}^{N} \mathbf{x}_i.
+\end{equation}
 Similarly, the observations are represented as follows:
 \begin{equation}
     \mathbf{D} = \left[ \mathbf{d}_1, \ldots, \mathbf{d}_N \right]
@@ -87,38 +79,53 @@ The random vector is drawn from an unbiased normal distribution:
 \begin{equation}
     \mathbf{\epsilon} \sim \mathcal{N} (0, \mathbf{R}).
 \end{equation}
-
+As with the model state, the mean data vector, $\bar{\mathbf{d}}$, can be found
+by averaging over the ensemble:
 \begin{equation}
-    \hat{\mathbf{X}} = \mathbf{X} + \mathbf{K}
-                       \left(
-                       \mathbf{D} - \mathbf{H} \mathbf{X}
-                       \right)
+    \bar{\mathbf{d}} = \sum_{i = 1}^{N} \mathbf{d}_i.
+\end{equation}
+Given that the noise added to the original data vector is unbiased, we should
+expect that
+\begin{equation}
+    \lim_{N \to \infty} \bar{\mathbf{d}} = \mathbf{d}
 \end{equation}
 
-\begin{equation}
-    \mathbf{K} = \mathbf{Q} \mathbf{H}^T
-                 {\left(
-                    \mathbf{H} \mathbf{Q} \mathbf{H}^T
-                    + \mathbf{R}
-                 \right)} ^ {-1}
-\end{equation}
+Given the above framework, the data assimilation cycle is made up of:
+\begin{enumerate}
+    \item Predict
+    \item Update:
+    \begin{equation}
+        \hat{\mathbf{X}} = \mathbf{X} + \mathbf{K}
+                           \left(
+                           \mathbf{D} - \mathbf{H} \mathbf{X}
+                           \right),
+    \end{equation}
+    with the Kalman Gain Matrix being given by
+    \begin{equation}
+        \mathbf{K} = \mathbf{Q} \mathbf{H}^T
+                     {\left(
+                     \mathbf{H} \mathbf{Q} \mathbf{H}^T
+                     + \mathbf{R}
+                     \right)} ^ {-1}.
+    \end{equation}
+\end{enumerate}
 
-\subsection{Different Types of Ensemble Kalman Filter}\label{sec:method:types}
+%\subsection{Different Types of Ensemble Kalman Filter}\label{sec:method:types}
 
-Talk about the different types of EnKF and the implications for ensemble size
-\citep{keller2018comparing}.
+%Talk about the different types of EnKF and the implications for ensemble size
+%\citep{keller2018comparing}.
 
-\begin{itemize}
-    \item Damping: counteract filter divergence
-    \item Localisation: reduce the effect of spurious correlations
-    \item Hybrid EnKF: Covariance matrix is made up of the weighted sum of the
-        usual covariance matrix and a separate static covariance matrix that
-        encodes prior underlying knowledge about the system
-    \item Dual EnKF: Split the state vector into state and parameters. At
-        assimilation: update parameters, recalculate forecast, update state
-    \item Normal Score EnKF: Developed to handle non-Gaussian PDFs in EnKF. At
-        assimilation: transform state, parameters and measurements into
-        Z-scores, perform EnKF update based on transformed values, transform
-        back from Z-scores
-    \item Iterative EnKF
-\end{itemize}
+%\begin{itemize}
+    %\item Damping: counteract filter divergence
+    %\item Localisation: reduce the effect of spurious correlations
+    %\item Hybrid EnKF: Covariance matrix is made up of the weighted sum of the
+        %usual covariance matrix and a separate static covariance matrix that
+        %encodes prior underlying knowledge about the system
+    %\item Dual EnKF: Split the state vector into state and parameters. At
+        %assimilation: update parameters, recalculate forecast, update state
+    %\item Normal Score EnKF: Developed to handle non-Gaussian PDFs in EnKF. At
+        %assimilation: transform state, parameters and measurements into
+        %Z-scores, perform EnKF update based on transformed values, transform
+        %back from Z-scores
+    %\item Iterative EnKF
+%\end{itemize}
