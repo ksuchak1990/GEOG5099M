@@ -1,8 +1,16 @@
 \documentclass[12pt, twoside, a4paper]{report}
 
-\usepackage[sort&compress]{natbib}
+\usepackage{amsmath}
 \usepackage[toc, page]{appendix}
+\usepackage{graphicx}
+\usepackage[sort&compress]{natbib}
+\usepackage{subcaption}
 \usepackage[nottoc]{tocbibind}
+
+% Location of the graphics files
+\graphicspath{{figures/}}
+% Set line spacing
+\linespread{1.5}
 
 \begin{document}
 
@@ -11,27 +19,32 @@ for an Agent-Based Model}
 \author{Keiran Suchak --- 200888140}
 \maketitle
 
-%\begin{abstract}
-%This is the abstract.
-%\end{abstract}
+\chapter*{\centering Abstract}
+\addcontentsline{toc}{chapter}{Abstract}
+
+This is the abstract.
 
 \tableofcontents
 \listoffigures
 \listoftables
 
-%\chapter*{Notes}
+\chapter*{Notes}
 
-%\begin{itemize}
-    %\item What is data assimilation?
-    %\item What is the Ensemble Kalman Filter?
-    %\item What are Agent-Based Models?
-    %\item How do people model pedestrians?
-    %\item What happens when an agent in one of the ensemble member models tries
-        %to leave the station early? Because we're only doing state estimation
-        %(meaning just the agent coordinates), the agent won't get reactivated.
-    %\item Errors should converge on something relating to twice the exit
-        %distance.
-%\end{itemize}
+\begin{itemize}
+    \item What is data assimilation?
+    \item What is the Ensemble Kalman Filter?
+    \item What are Agent-Based Models?
+    \item How do people model pedestrians?
+    \item What happens when an agent in one of the ensemble member models tries
+        to leave the station early? Because we're only doing state estimation
+        (meaning just the agent coordinates), the agent won't get reactivated.
+    \item Errors should converge on something relating to twice the exit
+        distance.
+    \item Signposting at the beginning of each chapter
+    \item Don't need to review calibration too much
+    \item Don't need to talk about different types of enkf's too much
+    \item Don't need to talk about DA with CA too much
+\end{itemize}
 
 %\section*{Structure}
 
@@ -55,6 +68,7 @@ for an Agent-Based Model}
 
 \begin{appendix}
     \include{appendices/code_documentation}
+    \include{appendices/bayes_rule}
 \end{appendix}
 
 \bibliographystyle{agsm}
