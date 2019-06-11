@@ -1,3 +1,43 @@
 \chapter{Conclusion}\label{ch:conclusion}
 
 This is the conclusion.
+
+\section{Future Work}\label{sec:conc:future}
+
+Talk about the different types of EnKF and the implications for ensemble size
+\citep{keller2018comparing}.
+
+\begin{itemize}
+    \item Damping: counteract filter divergence
+    \item Localisation: reduce the effect of spurious correlations
+    \item Hybrid EnKF: Covariance matrix is made up of the weighted sum of the
+        usual covariance matrix and a separate static covariance matrix that
+        encodes prior underlying knowledge about the system
+    \item Dual EnKF: Split the state vector into state and parameters. At
+        assimilation: update parameters, recalculate forecast, update state
+    \item Normal Score EnKF: Developed to handle non-Gaussian PDFs in EnKF. At
+        assimilation: transform state, parameters and measurements into
+        Z-scores, perform EnKF update based on transformed values, transform
+        back from Z-scores
+    \item Iterative EnKF
+\end{itemize}
+
+Problems to consider:
+\begin{itemize}
+    \item What happens when agents leave the system --- does the filter
+        recognise this correctly?
+    \item What happens when we are provided with aggregated information?
+    \item What happens when we are provided with different levels of information
+        for different agents?
+    \item Can the filter tell agents apart?
+    \item We have artificially told the filter information about agents'
+        entrance and exits - what happens if it doesn't know these?
+\end{itemize}
+
+Ideas for transfer:
+\begin{itemize}
+    \item Derivation of multivariate Kalman filter
+    \item Exploration of complexity of code (time and space)
+    \item Multithreading to deal with computational cost - identifying cut-off
+        point below which it is better to use serial computation. 
+\end{itemize}
