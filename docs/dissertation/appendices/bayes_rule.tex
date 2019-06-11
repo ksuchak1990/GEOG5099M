@@ -1,0 +1,26 @@
+\chapter{Bayes Rule}\label{ch:bayes}
+
+The joint probability --- $P(A, B)$ --- is the probability of event $A$ occurring
+and event $B$ occurring.
+The conditional probability --- $P(A | B)$ --- is the probability of event $A$
+occurring given that event $B$ occurs.
+The joint and conditional probabilities are linked by the following relationship:
+\begin{equation}
+    P(A, B) = P(A) P(B | A).
+\end{equation}
+Similarly, we have
+\begin{equation}
+    P(B, A) = P(B) P(A | B).
+\end{equation}
+Given that the joint probabilities of $A, B$ and $B, A$ are equal:
+\begin{equation*}
+    P(A, B) = P(B, A),
+\end{equation*}
+we have that
+\begin{equation}
+    P(A) P(B | A) = P(B) P(A | B).
+\end{equation}
+From this, we can derive the typical form of Bayes Rule:
+\begin{equation}
+    P(B | A) = \frac{P(A | B) P(B)}{P(A)}
+\end{equation}
