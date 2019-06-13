@@ -6,7 +6,6 @@ This is the conclusion.
 
 Talk about the different types of EnKF and the implications for ensemble size
 \citep{keller2018comparing}.
-
 \begin{itemize}
     \item Damping: counteract filter divergence
     \item Localisation: reduce the effect of spurious correlations
@@ -31,12 +30,14 @@ Problems to consider:
         for different agents?
     \item Can the filter tell agents apart?
     \item We have artificially told the filter information about agents'
-        entrance and exits - what happens if it doesn't know these?
+        entrance and exits - what happens if it doesn't know these? Do we then
+        need to do some assimilation for data assimilation?
 \end{itemize}
 
 Ideas for transfer:
 \begin{itemize}
-    \item Derivation of multivariate Kalman filter
+    \item Explore impact of different filter parameters on filter performance
+    \item Include derivation of multivariate Kalman filter
     \item Exploration of complexity of code (time and space)
     \item Multithreading to deal with computational cost - identifying cut-off
         point below which it is better to use serial computation. 
