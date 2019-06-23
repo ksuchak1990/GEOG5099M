@@ -2,7 +2,8 @@
 
 As summarised in Chapter \ref{ch:lit_rev}, there exist a number of different
 data assimilation schemes, many of which are used extensively in fields such as
-numerical weather prediction, ... and ...
+numerical weather prediction, navigation and tracking, and other forecasting
+problems.
 Such methods, however, have been sparsely used in the field of real-time urban
 simulation and as such this investigation attempts to build upon the existing
 work by implementing the Ensemble Kalman Filter in conjunction with a pedestrian
@@ -16,19 +17,54 @@ with the innovations that it incorporates.
 
 \section{Kalman Filter}\label{sec:method:kf}
 
-One of the earliest forms of Bayesian filtering is known as Wiener filtering
-\citep{wiener1950extrapolation}, which is used in the field of signal
-processing.
-The subsequent development of the Kalman Filter \citep{kalman1960new,
-kalman1961new}, however, is the foundation on which this work is based.
-The Kalman Filter is a sequential data assimilation scheme which updates the
-state and covariance matrix, weighted based on the uncertainty in the model
+%One of the earliest forms of Bayesian filtering is known as Wiener filtering
+%\citep{wiener1950extrapolation}, which is used in the field of signal
+%processing.
+One of the earliest forms of Bayesian filtering is the sequential data
+asssimilation scheme known as the Kalman Filter, which forms the foundation of
+this piece of work.
+As with other sequential data assimilation schemes, the Kalman Filter operates
+on a model with a given state and forecasting process, updating the state and
+associated covariance matrix upon receipt of new observations.
+As outlined in Section \ref{sec:lit_rev:da}, this can be encoded in Bayes
+Theorem:
+\begin{equation}
+    P \left( \mathbf{x} | \mathbf{d} \right) = 
+    \frac{P ( \mathbf{d} | \mathbf{x} ) P ( \mathbf{x} )}{P ( \mathbf{d} ) }.
+\end{equation}
+
+\begin{equation}
+    \hat{\mathbf{x}} = \mathbf{x} + \mathbf{K} \left(
+                        \mathbf{d} - \mathbf{H} \mathbf{x} \right)
+\end{equation}
+
+\begin{equation}
+    \hat{\mathbf{Q}} = \left( \mathbf{I} - \mathbf{K} \mathbf{H} \right)
+                        \mathbf{Q}
+\end{equation}
+
+\begin{equation}
+    \mathbf{K} = \mathbf{Q} \mathbf{H}^T \left(
+                    \mathbf{H} \mathbf{Q} \mathbf{H}^T + \mathbf{R}
+                 \right) ^ {-1}
+\end{equation}
+
+This update process is undertaken based on the uncertainty in the model
 forecasts and the observation uncertainty with a view to minimising the
 posterior mean squared error.
 
 \begin{itemize}
     \item When is it bad?
     \item What can we do to improve it?
+    \item The KF provides us with the exact posterior estimate when errors are
+        normally distributed.
+    \item KF is based on linear dynamical system --- that is to say that both of
+        the matrices $\mathbf{M}$ (the model forecast operator) and $\mathbf{H}$
+        (the observation operator) perform linear transformations.
+    \item This is often not the case with more complex systems, particularly
+        when the system elements interact with each other (as is typically the
+        case in Agent-Based Models).
+    \item 
 \end{itemize}
 
 \begin{enumerate}
@@ -102,9 +138,9 @@ Given the above framework, the data assimilation cycle is made up of:
     \end{equation}
     with the Kalman Gain Matrix being given by
     \begin{equation}
-        \mathbf{K} = \mathbf{Q} \mathbf{H}^T
+        \mathbf{K} = \mathbf{C} \mathbf{H}^T
                      {\left(
-                     \mathbf{H} \mathbf{Q} \mathbf{H}^T
+                     \mathbf{H} \mathbf{C} \mathbf{H}^T
                      + \mathbf{R}
                      \right)} ^ {-1}.
     \end{equation}

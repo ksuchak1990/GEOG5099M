@@ -42,3 +42,16 @@ Ideas for transfer:
     \item Multithreading to deal with computational cost - identifying cut-off
         point below which it is better to use serial computation. 
 \end{itemize}
+
+Extensions to the EnKF \cite{katzfuss2016understanding}:
+\begin{itemize}
+    \item Variance inflation: often have ensemble size much smaller than state
+        dimension, which can mean that $\mathbf{K}$ can be a poor approximation
+        of the kalman gain matrix; we can therefore get downwardly biased
+        estimates of the posterior state covariance matrix ---  we can fix this
+        with covariance inflation whereby we multiply the covariance matrix by a
+        constant (greater than one).
+    \item Localisation: small ensemble sizes can result in spurious
+        correlations between state components that are physically far apart ---
+        we can use localisation to avoid this.
+    \item Parameter estimation: 
