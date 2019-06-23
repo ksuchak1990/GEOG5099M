@@ -32,14 +32,14 @@ implement such techniques to agent-based models that simulate urban systems.
 
 \section{Data Assimilation}\label{sec:lit_rev:da}
 
-\begin{itemize}
-    \item Origins of filtering with Wiener filter, 1950. Only applies for
-        stationary signals.
-    \item Kalman-Bucy 1961
-    \item Stratonovich 1968
-    \item Jazwinski 1970
-    \item 
-\end{itemize}
+%\begin{itemize}
+    %\item Origins of filtering with Wiener filter, 1950. Only applies for
+        %stationary signals.
+    %\item Kalman-Bucy 1961
+    %\item Stratonovich 1968
+    %\item Jazwinski 1970
+    %\item 
+%\end{itemize}
 
 The process of data assimilation involves making use of observations along with
 prior knowledge (which, in our case, is encoded in a model) to produce
@@ -88,11 +88,13 @@ the  state in the form of the posterior, $P \left( \mathbf{x} | \mathbf{d}
 \right)$, given new observations, $P \left( \mathbf{d} \right)$.
 
 There exist a number of different schemes for tackling this problem which are
-often divided into two groups:
+often divided into two groups \citep{talagrand1997assimilation}:
 \begin{enumerate}
-    \item \textbf{Sequential}: What does this mean and some examples, Kalman
+    \item \textbf{Sequential}: Upon the arrival of a new observation, the model
+        state is updated at the time of the new observation; includes Kalman
         Filter (and variations thereof), Particle Filter.
-    \item \textbf{Variational}: What does this mean and some examples, 3D-VAR,
+    \item \textbf{Variational}: Upon the arrival of a new observation, the model
+        solutions are updated at all times simultaneously; includes 3D-VAR,
         4D-VAR.
 \end{enumerate}
 
@@ -426,6 +428,50 @@ The ratio of the two parameters, however, is correctly estimated, suggesting
 that the data assimilation process has correctly estimated the governing
 dynamics.
 
+The second experiment aimed to model pedestrians arriving and departing at
+Briggate in Leeds.
+Pedestrians are divided into shoppers and workers, with each group being
+governed by epidemic-like dynamics.
+Shoppers are either at home before shopping (susceptible), in town shopping
+(infected) or at home having returned from shopping (recovered); workers are
+either at home or at work.
+This approach seeks to more realistically represent pedestrian behaviour,
+designating different types of people and introducing more complex behaviours
+for agents deciding to enter the city.
+The data used was sourced from a footfall camera on Briggate which recorded
+hourly counts of the number of pedestrians arriving; as such, the primary target
+of the assimilation process was the cumulative count of the number of agents to
+have arrived in the city, combining both shoppers and workers.
+The Ensemble Kalman Filter was applied using different ensemble sizes ($10$,
+$100$ and $1000$), and it was found that as the ensemble size increased, the
+accuracy of the simulation improved; it was noted, furthermore that the
+improvement observed between ensemble sizes of $10$ and $100$ were much greater
+than between ensemble sizes of $100$ and $1000$.
+Once again, parameter estimation was undertaken; however, in this case a
+particle filter-like approach was used.
+
+Whilst this investigation displays that the Ensemble Kalman Filter can be
+implemented in conjunction with an agent-based model to successfully improve the
+model's prediction accuracy, it suffers from a number of shortcomings.
+First and foremost, it should be noted that the models used for the
+investigation are very simple in comparison to the majority of agent-based
+models.
+The model used in the first experiment is a binary state model, with each agent
+either being in the city or not in the city.
+The inter-agent interaction governing their transition between the two states is
+global --- this is to say that each agent's decisions are based on the state of
+every other agent without considering more intricate mechanisms of attraction
+and repulsion between agents \citep{helbing1995social} such as spatially local
+ones.
+Whilst the second experiment seeks to include a richer set of behaviours by
+further segmenting the agents, it still fails to include any spatial aspect,
+with agents again able to interact in a homogeneous fashion.
+In the case of each off the experiments, data assimilation is used to perform
+both state estimation and parameter estimation.
+
+Beyond this, it should be noted that the inclusion of parameter estimation,
+whilst not uncommon, is not a standard approach and so some attention should be
+given to the impact of its inclusion in the procedure.
 
 \subsection{Other Approaches}\label{sub:lit_rev:da_abm:other}
 
@@ -503,4 +549,6 @@ Issues to consider:
         potential future states in a non-linear fashion?
     \item Can better information regarding agent behaviour be used to improve
         data assimilation?
+    \item EnKF vs PF: typically don't need as big ensemble sizes with EnKF, but
+        might not be able to handle models.
 \end{itemize}
