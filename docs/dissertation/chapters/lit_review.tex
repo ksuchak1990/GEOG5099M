@@ -473,31 +473,31 @@ Beyond this, it should be noted that the inclusion of parameter estimation,
 whilst not uncommon, is not a standard approach and so some attention should be
 given to the impact of its inclusion in the procedure.
 
-\subsection{Other Approaches}\label{sub:lit_rev:da_abm:other}
+%\subsection{Other Approaches}\label{sub:lit_rev:da_abm:other}
 
-\subsection{Wang 2017}
 
-Maritime piracy is posing a genuine threat to maritime transport.
-The main purpose of simulation is to predict behaviours of many actual systems,
-and it has been successfully applied in many fields.
-But the application of simulation in the maritime domain is still scarce.
-The rapid development of network and measurement technologies brings about
-higher accuracy and better availability of online measurements.
-This makes the simulation paradigm names as dynamic data driven simulation
-increasingly popular.
-It can assimilation the online measurements into the running simulation models
-and ensure much more accurate prediction of the complex systems under study.
-In this paper, we study how to utilise the online measurements in the agent
-based simulation of the maritime pirate activity.
-A new random finite set based data assimilation algorithm is proposed to
-overcome the limitations of the conventional vectors based data assimilation
-algorithms.
-The random finite set based general data model, measurement model, and
-simulation model are introduced to support the proposed algorithm.
-The details of the proposed algorithm are presented in the context of agent
-based simulation of maritime pirate activity.
-Two groups of experiments are used to practically prove the effectiveness and
-superiority of the proposed algorithm.
+
+%Maritime piracy is posing a genuine threat to maritime transport.
+%The main purpose of simulation is to predict behaviours of many actual systems,
+%and it has been successfully applied in many fields.
+%But the application of simulation in the maritime domain is still scarce.
+%The rapid development of network and measurement technologies brings about
+%higher accuracy and better availability of online measurements.
+%This makes the simulation paradigm names as dynamic data driven simulation
+%increasingly popular.
+%It can assimilation the online measurements into the running simulation models
+%and ensure much more accurate prediction of the complex systems under study.
+%In this paper, we study how to utilise the online measurements in the agent
+%based simulation of the maritime pirate activity.
+%A new random finite set based data assimilation algorithm is proposed to
+%overcome the limitations of the conventional vectors based data assimilation
+%algorithms.
+%The random finite set based general data model, measurement model, and
+%simulation model are introduced to support the proposed algorithm.
+%The details of the proposed algorithm are presented in the context of agent
+%based simulation of maritime pirate activity.
+%Two groups of experiments are used to practically prove the effectiveness and
+%superiority of the proposed algorithm.
 
 %\begin{itemize}
     %\item \cite{ward2016dynamic} --- model of pedestrians on Briggate, a 1-D
@@ -516,14 +516,6 @@ superiority of the proposed algorithm.
 
 %\subsection{Data Assimilation with Cellular Automata}\label{sub:lit_rev:da:ca}
 
-Whilst this dissertation focuses on the application of data assimilation methods
-to agent-based models, there also exists a body of work that makes use of the
-same methods in conjunction with cellular automata \citep{li2012assimilating,
-li2017exploring}.
-Cellular automata can be thought of as a specific case of agent-based models in
-which the environment is characterised by a discrete grid, with the occupancy of
-each grid cell being updated over time based on the state of its neighbouring
-cells.
 
 %\begin{itemize}
     %\item WHAT ARE CELLULAR AUTOMATA
@@ -552,3 +544,38 @@ Issues to consider:
     \item EnKF vs PF: typically don't need as big ensemble sizes with EnKF, but
         might not be able to handle models.
 \end{itemize}
+
+As has been seen, there exist a small number of investigations which attempt to
+implement sequential data assimilation schemes in conjunction with agent-based
+pedestrian models; in each case, the filtering process lead to improvements in
+the modelling accuracy.
+Much of the work that has been undertaken has used the Particle Filter, and has
+made use of synthetic data; the ultimate goal of developing such a technology
+will inevitably be to use it with real-world data which is generated in
+real-time.
+
+Each of the two data assimilation schemes that have been used have their own
+strengths and weaknesses.
+The Ensemble Kalman Filter used by \citet{ward2016dynamic} are typically run
+with smaller ensemble sizes, but struggle in cases when probability
+distributions are non-normal. 
+The Particle Filters used by \citet{wang2013data, rai2013behavior,
+wang2015data} resolve this issues, offering an exact solution at the cost of
+requiring larger ensemble sizes and consequently greater computation space and
+time.
+
+This work therefore seeks to build upon the work by \citet{ward2016dynamic} in
+implementing an Ensemble Kalman Filter in conjunction with a agent-based
+pedestrian model.
+
+As an additional note, whilst this dissertation focuses on the application of
+data assimilation methods to agent-based models, there also exists a body of
+work that makes use of the same methods in conjunction with cellular automata
+\citep{li2012assimilating, li2017exploring}.
+This may be of interest to those interested more broadly in the development of
+real-time social simulation.
+
+%Cellular automata can be thought of as a specific case of agent-based models in
+%which the environment is characterised by a discrete grid, with the occupancy of
+%each grid cell being updated over time based on the state of its neighbouring
+%cells.
