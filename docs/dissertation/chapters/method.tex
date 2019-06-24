@@ -108,7 +108,9 @@ This approximation is achieved through a Monte Carlo approach of using an
 ensemble of sample state vectors to represent the state distribution; this
 development mirrors the recent incorporation of Monte Carlo methods in the field
 of Bayesian statistics \citep{wikle2007bayesian}.
-As such, the state is represented as follows:
+The remainder of this section will seek to outline this framework in a manner
+similar to that documented by \citet{mandel2009brief}.
+The state is represented as an ensemble of state vectors as follows:
 \begin{equation}
     \mathbf{X} = \left[ \mathbf{x}_1, \ldots, \mathbf{x}_N \right]
                = \left[ \mathbf{x}_i \right], \quad \forall i \in (1, N),
@@ -132,9 +134,9 @@ original observation $\mathbf{d}$, and a random vector, $\mathbf{\epsilon}_i$:
                    \forall i \in (1, N).
 \end{equation}
 The random vector is drawn from an unbiased normal distribution:
-\begin{equation}
+\begin{equation*}
     \mathbf{\epsilon} \sim \mathcal{N} (0, \mathbf{R}).
-\end{equation}
+\end{equation*}
 As with the model state, the mean data vector, $\bar{\mathbf{d}}$, can be found
 by averaging over the ensemble:
 \begin{equation}
@@ -142,18 +144,30 @@ by averaging over the ensemble:
 \end{equation}
 Given that the noise added to the original data vector is unbiased, we should
 expect that
-\begin{equation}
+\begin{equation*}
     \lim_{N \to \infty} \bar{\mathbf{d}} = \mathbf{d}
-\end{equation}
+\end{equation*}
 
-Given the above framework, the data assimilation cycle is made up of:
+By implementing these adaptations, the Ensemble Kalman Filter aims to address
+the issues faced by the original Kalman Filter with respect to forecasting the
+state covariance matrix; more specifically, as a result of this approach the
+state covariance matrix no longer needs to forecasted by applying the model
+operator, but instead can simply be generated as a sampling covariance.
+Consequently, concerns over the computational cost of forecasting the covariance
+matrix and over the requirement that the forecasting process be undertaken by
+applying a linear operator to the covariance matrix are greatly reduced.
+
+Given the above framework, the data assimilation is once again made up of the
+predict-update cycle, with the updating of the state ensemble,
+$\hat{\mathbf{X}}$, begin undertaken on the basis of the following equation: 
 \begin{equation}
     \hat{\mathbf{X}} = \mathbf{X} + \mathbf{K}
                         \left(
                         \mathbf{D} - \mathbf{H} \mathbf{X}
                         \right),
 \end{equation}
-with the Kalman Gain Matrix being given by
+where $\mathbf{H}$ is once again the observation operator. 
+In this case, the Kalman gain matrix, $\mathbf{K}$ is given by
 \begin{equation}
     \mathbf{K} = \mathbf{C} \mathbf{H}^T
                      {\left(
@@ -161,6 +175,8 @@ with the Kalman Gain Matrix being given by
                      + \mathbf{R}
                      \right)} ^ {-1}.
 \end{equation}
+in which the previous state covariance matrix, $\mathbf{Q}$, has been replace
+with the sample state covariance matrix, $\mathbf{C}$.
 
 %\subsection{Different Types of Ensemble Kalman Filter}\label{sec:method:types}
 
