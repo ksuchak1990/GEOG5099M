@@ -26,60 +26,80 @@ this piece of work.
 As with other sequential data assimilation schemes, the Kalman Filter operates
 on a model with a given state and forecasting process, updating the state and
 associated covariance matrix upon receipt of new observations.
-As outlined in Section \ref{sec:lit_rev:da}, this can be encoded in Bayes
-Theorem:
-\begin{equation}
-    P \left( \mathbf{x} | \mathbf{d} \right) = 
-    \frac{P ( \mathbf{d} | \mathbf{x} ) P ( \mathbf{x} )}{P ( \mathbf{d} ) }.
-\end{equation}
-
+This is undertaken as part of the predict-update cycle.
+The prediction process is undertaken by applying the modelling operator to both
+the model state and model state covariance.
+The update process is undertaken based on the uncertainty in the model forecasts
+and the observation uncertainty with a view to minimising the posterior mean
+squared error.
+Under the Bayesian framework outlined in Section \ref{sec:lit_rev:da}, we refer
+to the model state vector and associated covariance before updating as the prior,
+$\mathbf{x}$ and $\mathbf{Q}$, and to the model state and associated covariance
+after updating as the posterior, $\hat{\mathbf{x}}$ and $\hat{\mathbf{Q}}$.
+Given new observations, $\mathbf{d}$, the posterior state vector is given by
 \begin{equation}
     \hat{\mathbf{x}} = \mathbf{x} + \mathbf{K} \left(
-                        \mathbf{d} - \mathbf{H} \mathbf{x} \right)
+                        \mathbf{d} - \mathbf{H} \mathbf{x} \right),
 \end{equation}
-
+and the posterior covariance is given by
 \begin{equation}
     \hat{\mathbf{Q}} = \left( \mathbf{I} - \mathbf{K} \mathbf{H} \right)
-                        \mathbf{Q}
+                        \mathbf{Q},
 \end{equation}
-
+where $\mathbf{K}$ is the Kalman gain matrix and $\mathbf{H}$ is the observation operator.
+The Kalman gain matrix is given by
 \begin{equation}
     \mathbf{K} = \mathbf{Q} \mathbf{H}^T \left(
                     \mathbf{H} \mathbf{Q} \mathbf{H}^T + \mathbf{R}
                  \right) ^ {-1}
 \end{equation}
+where $\mathbf{R}$ is the observation covariance.
 
-This update process is undertaken based on the uncertainty in the model
-forecasts and the observation uncertainty with a view to minimising the
-posterior mean squared error.
+In the case when the errors are normally distributed, this filter provides an
+exact posterior estimate.
+However, this approach suffers from two issues.
+The first of these is that it assumes that the operators that are applied
+(namely the model transition operator and the observation operator) are linear;
+this is often not the case with more complex systems, particularly when the
+system elements interact with each other (as is typically the case in
+agent-based models).
+Furthermore, as the dimensionality of the model increases, the cost of
+propagating forward the model state covariance may increase to the point where
+it is intractable.
 
-\begin{itemize}
-    \item When is it bad?
-    \item What can we do to improve it?
-    \item The KF provides us with the exact posterior estimate when errors are
-        normally distributed.
-    \item KF is based on linear dynamical system --- that is to say that both of
-        the matrices $\mathbf{M}$ (the model forecast operator) and $\mathbf{H}$
-        (the observation operator) perform linear transformations.
-    \item This is often not the case with more complex systems, particularly
-        when the system elements interact with each other (as is typically the
-        case in Agent-Based Models).
-    \item 
-\end{itemize}
+A number of approaches have been developed which attempt to solve these
+problems, one of which is the Ensemble Kalman Filter.
 
-\begin{enumerate}
-    \item Predict
-    \item Update
-\end{enumerate}
+%As outlined in Section \ref{sec:lit_rev:da}, this can be encoded in Bayes
+%Theorem:
+%\begin{equation}
+    %P \left( \mathbf{x} | \mathbf{d} \right) = 
+    %\frac{P ( \mathbf{d} | \mathbf{x} ) P ( \mathbf{x} )}{P ( \mathbf{d} ) }.
+%\end{equation}
+
+%\begin{itemize}
+    %\item When is it bad?
+    %\item What can we do to improve it?
+    %\item The KF provides us with the exact posterior estimate when errors are
+        %normally distributed.
+    %\item KF is based on linear dynamical system --- that is to say that both of
+        %the matrices $\mathbf{M}$ (the model forecast operator) and $\mathbf{H}$
+        %(the observation operator) perform linear transformations.
+    %\item This is often not the case with more complex systems, particularly
+        %when the system elements interact with each other (as is typically the
+        %case in Agent-Based Models).
+    %\item 
+%\end{itemize}
+
 
 \section{Ensemble Kalman Filter}\label{sec:method:enkf}
 
-Problems with the Kalman Filter:
-\begin{itemize}
-    \item it assumes Gaussian PDFs
-    \item it assumes linear model
-    \item Cost of evolving covariance matrix
-\end{itemize}
+%Problems with the Kalman Filter:
+%\begin{itemize}
+    %\item it assumes Gaussian PDFs
+    %\item it assumes linear model
+    %\item Cost of evolving covariance matrix
+%\end{itemize}
 
 In order to address some of these problems, the Ensemble Kalman Filter was
 developed \citep{evensen2003ensemble, evensen2009ensemble}, which acts as an
@@ -127,24 +147,20 @@ expect that
 \end{equation}
 
 Given the above framework, the data assimilation cycle is made up of:
-\begin{enumerate}
-    \item Predict
-    \item Update:
-    \begin{equation}
-        \hat{\mathbf{X}} = \mathbf{X} + \mathbf{K}
-                           \left(
-                           \mathbf{D} - \mathbf{H} \mathbf{X}
-                           \right),
-    \end{equation}
-    with the Kalman Gain Matrix being given by
-    \begin{equation}
-        \mathbf{K} = \mathbf{C} \mathbf{H}^T
+\begin{equation}
+    \hat{\mathbf{X}} = \mathbf{X} + \mathbf{K}
+                        \left(
+                        \mathbf{D} - \mathbf{H} \mathbf{X}
+                        \right),
+\end{equation}
+with the Kalman Gain Matrix being given by
+\begin{equation}
+    \mathbf{K} = \mathbf{C} \mathbf{H}^T
                      {\left(
                      \mathbf{H} \mathbf{C} \mathbf{H}^T
                      + \mathbf{R}
                      \right)} ^ {-1}.
-    \end{equation}
-\end{enumerate}
+\end{equation}
 
 %\subsection{Different Types of Ensemble Kalman Filter}\label{sec:method:types}
 
