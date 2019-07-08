@@ -1,10 +1,45 @@
 \chapter{Conclusion}\label{ch:conclusion}
 
 This is the conclusion.
+\begin{itemize}
+    \item What does this investigation aim to do?
+    \item How does it do it?
+    \item Is is successful, and if so how successful?
+    \item What are the limitations?
+\end{itemize}
+
+Problems to consider:
+\begin{itemize}
+    \item What happens when agents leave the system --- does the filter
+        recognise this correctly?
+    \item What happens when we are provided with aggregated information?
+    \item What happens when we are provided with different levels of information
+        for different agents?
+    \item Can the filter tell agents apart?
+    \item We have artificially told the filter information about agents'
+        entrance and exits - what happens if it doesn't know these? Do we then
+        need to do some assimilation for data assimilation?
+\end{itemize}
 
 \section{Future Work}\label{sec:conc:future}
 
-Talk about the different types of EnKF and the implications for ensemble size
+Ideas for transfer:
+\begin{itemize}
+    \item Explore impact of different filter parameters on filter performance
+    \item Explore impact of missing information; this can come in the form of
+        less frequent observation, observations of a selection of the agents.
+    \item Explore impact of aggregated observation
+    \item Include derivation of multivariate Kalman filter
+    \item Exploration of complexity of code (time and space)
+    \item Multithreading to deal with computational cost - identifying cut-off
+        point below which it is better to use serial computation. This doesn't
+        seem necessary at this stage as code runs in reasonable time with given
+        parameters, but something to consider for larger ensemble sizes,
+        population sizes. There will likely be some trade-off when looking at
+        assimilation period due to cost of message passing.
+\end{itemize}
+
+Different types of EnKF and the implications for ensemble size
 \citep{keller2018comparing}.
 \begin{itemize}
     \item Damping: counteract filter divergence
@@ -21,28 +56,6 @@ Talk about the different types of EnKF and the implications for ensemble size
     \item Iterative EnKF
 \end{itemize}
 
-Problems to consider:
-\begin{itemize}
-    \item What happens when agents leave the system --- does the filter
-        recognise this correctly?
-    \item What happens when we are provided with aggregated information?
-    \item What happens when we are provided with different levels of information
-        for different agents?
-    \item Can the filter tell agents apart?
-    \item We have artificially told the filter information about agents'
-        entrance and exits - what happens if it doesn't know these? Do we then
-        need to do some assimilation for data assimilation?
-\end{itemize}
-
-Ideas for transfer:
-\begin{itemize}
-    \item Explore impact of different filter parameters on filter performance
-    \item Include derivation of multivariate Kalman filter
-    \item Exploration of complexity of code (time and space)
-    \item Multithreading to deal with computational cost - identifying cut-off
-        point below which it is better to use serial computation. 
-\end{itemize}
-
 Extensions to the EnKF \cite{katzfuss2016understanding}:
 \begin{itemize}
     \item Variance inflation: often have ensemble size much smaller than state
@@ -50,9 +63,11 @@ Extensions to the EnKF \cite{katzfuss2016understanding}:
         of the kalman gain matrix; we can therefore get downwardly biased
         estimates of the posterior state covariance matrix ---  we can fix this
         with covariance inflation whereby we multiply the covariance matrix by a
-        constant (greater than one).
+        constant (greater than one). (Should check if this is an issue that we
+        need to consider).
     \item Localisation: small ensemble sizes can result in spurious
         correlations between state components that are physically far apart ---
         we can use localisation to avoid this.
     \item Parameter estimation: 
 \end{itemize}
+
