@@ -5,22 +5,22 @@ and event $B$ occurring.
 The conditional probability --- $P(A | B)$ --- is the probability of event $A$
 occurring given that event $B$ occurs.
 The joint and conditional probabilities are linked by the following relationship:
-\begin{equation}
+\begin{equation}\label{eq:ab}
     P(A, B) = P(A) P(B | A).
 \end{equation}
 Similarly, we have
-\begin{equation}
+\begin{equation}\label{eq:ba}
     P(B, A) = P(B) P(A | B).
 \end{equation}
 Given that the joint probabilities of $A, B$ and $B, A$ are equal:
 \begin{equation*}
     P(A, B) = P(B, A),
 \end{equation*}
-we have that
-\begin{equation}
+Equations \ref{eq:ab} and \ref{eq:ba} can be put together to give
+\begin{equation}\label{eq:pre_bayes}
     P(A) P(B | A) = P(B) P(A | B).
 \end{equation}
-From this, we can derive the typical form of Bayes Rule:
-\begin{equation}
-    P(B | A) = \frac{P(A | B) P(B)}{P(A)}
+From this, we can derive the typical form of Bayes Rule by dividing by $P(A)$:
+\begin{equation}\label{eq:bayes}
+    P(B | A) = \frac{P(A | B) P(B)}{P(A)}.
 \end{equation}
