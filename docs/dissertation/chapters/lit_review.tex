@@ -244,10 +244,11 @@ Furthermore, each particle is required to evolve the model for each time-step,
 resulting in an increasing computational cost.
 
 There are two subsequent pieces of research which have sought to build directly
-upon the above initial investigation.
-The first of these was undertaken by \citet{rai2013behavior}, using the same
-simulation model and method of data assimilation but aiming to add a further
-layer which estimated behavioural patterns in the system.
+upon the above initial investigation; each of them make use of the same
+simulation model, adding different developments.
+
+The first of these was undertaken by \citet{rai2013behavior} and aimed to add a
+further layer by estimating behavioural patterns in the system.
 This was achieved using a hidden Markov model which was trained on the
 historical data of the system.
 The information encoded in the hidden Markov model is incorporated into the
@@ -324,16 +325,11 @@ It is worth considering, however, that the addition of this further layer to the
 assimilation process would also result in a further increase in the
 computational cost.
 
-The second investigation \citep{wang2015data} based on the original work by
-\citet{wang2013data} more closely reflected the original work.
-The research was concerned with the same smart environment equipped with
-sensors around which agents move.
-The agents' behaviours were comprised of a combination of agent-repulsion and
-destination-attraction with constant agent movement speed over time.
-As in previous work, a particle filter was applied as the data assimilation
-scheme --- a method that involves resampling.
-The authors propose three different methods for resampling (standard resampling,
-component set resampling and mixed component set resampling).
+The second of the investigations to develop on the initial work by
+\citet{wang2013data} was undertaken by \citet{wang2015data}, this time making
+use of three different resampling schemes: standard resampling (as seen in the
+original investigation), component set resampling and mixed component set
+resampling.
 Given these resampling schemes, they undertake four experiments.
 
 The first of these experiments seeks to address the use of component set
@@ -455,7 +451,9 @@ implemented in conjunction with an agent-based model to successfully improve the
 model's prediction accuracy, it suffers from a number of shortcomings.
 First and foremost, it should be noted that the models used for the
 investigation are very simple in comparison to the majority of agent-based
-models.
+models; indeed, the authors admit that the models used for the investigation
+were not developed in the standard object-oriented framework typically used in
+agent-based modelling.
 The model used in the first experiment is a binary state model, with each agent
 either being in the city or not in the city.
 The inter-agent interaction governing their transition between the two states is
@@ -466,7 +464,7 @@ ones.
 Whilst the second experiment seeks to include a richer set of behaviours by
 further segmenting the agents, it still fails to include any spatial aspect,
 with agents again able to interact in a homogeneous fashion.
-In the case of each off the experiments, data assimilation is used to perform
+In the case of each of the experiments, data assimilation is used to perform
 both state estimation and parameter estimation.
 
 Beyond this, it should be noted that the inclusion of parameter estimation,
