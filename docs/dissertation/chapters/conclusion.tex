@@ -8,6 +8,8 @@ This is the conclusion.
     \item What are the limitations?
 \end{itemize}
 
+The investigation, however, is limited in a number of ways.
+
 Problems to consider:
 \begin{itemize}
     \item What happens when agents leave the system --- does the filter
@@ -23,51 +25,112 @@ Problems to consider:
 
 \section{Future Work}\label{sec:conc:future}
 
-Ideas for transfer:
-\begin{itemize}
-    \item Explore impact of different filter parameters on filter performance
-    \item Explore impact of missing information; this can come in the form of
-        less frequent observation, observations of a selection of the agents.
-    \item Explore impact of aggregated observation
-    \item Include derivation of multivariate Kalman filter
-    \item Exploration of complexity of code (time and space)
-    \item Multithreading to deal with computational cost - identifying cut-off
-        point below which it is better to use serial computation. This doesn't
-        seem necessary at this stage as code runs in reasonable time with given
-        parameters, but something to consider for larger ensemble sizes,
-        population sizes. There will likely be some trade-off when looking at
-        assimilation period due to cost of message passing.
-\end{itemize}
+As noted above, the work presented herein is only a preliminary investigation
+and consequently is limited.
+The first avenue for future work would therefore be to expand on this
+investigation by exploring the impact of each of the parameters provided to the
+filter (as shown in Table \ref{tab:filter_params}).
+Particular focus should be given to investigating the effects of varying the
+assimilation period, the ensemble size and the observation error.
+This may require the used of multithreading as the computational cost increases.
+Care should be taken in implementing such an approach, however, as there may
+come a point where the cost of passing information between threads outweighs the
+benefit of splitting work between multiple processes.
+%We would expect the following relationships to arise:
+%\begin{itemize}
+    %\item As the assimilation period is reduced, the error with which the model
+        %simulates the system reduces; less model-time occurs between
+        %observations being assimilated and consequently there is less time in
+        %which the model can diverge from the ``true'' state.
+    %\item As the ensemble size increases, the error with which the model
+        %simulates the system reduces.
+    %\item As the standard deviation of the observation error increases, the
+        %Kalman gain matrix will likely bias in favour of the model state over
+        %the observed state, and consequently the 
+%\end{itemize}
 
-Different types of EnKF and the implications for ensemble size
-\citep{keller2018comparing}.
+Beyond this, attention should be given to the information provided to the data
+assimilation method.
+In this investigation, we have assumed that we have positional information about
+each of the individual agents at each of the assimilation steps, however this is
+seldom the case \citep{council2019leeds}.
+The observations provided may be deficient in any of the following ways:
 \begin{itemize}
-    \item Damping: counteract filter divergence
-    \item Localisation: reduce the effect of spurious correlations
-    \item Hybrid EnKF: Covariance matrix is made up of the weighted sum of the
-        usual covariance matrix and a separate static covariance matrix that
-        encodes prior underlying knowledge about the system
-    \item Dual EnKF: Split the state vector into state and parameters. At
-        assimilation: update parameters, recalculate forecast, update state
-    \item Normal Score EnKF: Developed to handle non-Gaussian PDFs in EnKF. At
-        assimilation: transform state, parameters and measurements into
-        Z-scores, perform EnKF update based on transformed values, transform
-        back from Z-scores
-    \item Iterative EnKF
+    \item Observations only provided for a subset of the population.
+    \item Observations provided for different agents at different assimilation
+        steps.
+    \item Observations provided in aggregated form. 
 \end{itemize}
+Each of these scenarios present different problems, each of which warrant
+investigation.
+Furthermore, it is assumed that the filtering method has knowledge of other
+agent attributes such as their entrance and exits gates --- in reality, this is
+unlikely to be the case.
+Consequently, further investigations may seek to explore the impact of the
+filter lacking this information, and the effect of trying to remedy the problem.
+Such a solution might take the form of including parameters in the state vector
+in order to also use data assimilation for parameter estimation.
 
-Extensions to the EnKF \cite{katzfuss2016understanding}:
-\begin{itemize}
-    \item Variance inflation: often have ensemble size much smaller than state
-        dimension, which can mean that $\mathbf{K}$ can be a poor approximation
-        of the kalman gain matrix; we can therefore get downwardly biased
-        estimates of the posterior state covariance matrix ---  we can fix this
-        with covariance inflation whereby we multiply the covariance matrix by a
-        constant (greater than one). (Should check if this is an issue that we
-        need to consider).
-    \item Localisation: small ensemble sizes can result in spurious
-        correlations between state components that are physically far apart ---
-        we can use localisation to avoid this.
-    \item Parameter estimation: 
-\end{itemize}
+%Ideas for transfer:
+%\begin{itemize}
+    %\item Explore impact of different filter parameters on filter performance
+    %\item Explore impact of missing information; this can come in the form of
+        %less frequent observation, observations of a selection of the agents.
+    %\item Explore impact of aggregated observation
+    %\item Include derivation of multivariate Kalman filter
+    %\item Exploration of complexity of code (time and space)
+    %\item Multithreading to deal with computational cost - identifying cut-off
+        %point below which it is better to use serial computation. This doesn't
+        %seem necessary at this stage as code runs in reasonable time with given
+        %parameters, but something to consider for larger ensemble sizes,
+        %population sizes. There will likely be some trade-off when looking at
+        %assimilation period due to cost of message passing.
+%\end{itemize}
+
+The related data assimilation method known as the Particle Filter has also been
+applied to the model presented in this investigation.
+A further piece of work may aim to compare the efficacy of the two methods.
+Whilst the main consideration such an investigation should be the effectiveness
+with which each filter can reduce simulation error, some consideration should
+also be given to a comparison of their computational complexity, i.e.\ the way
+in which the time and memory required by the program scale with respect to
+program parameters, with a view to exploring the trade-off of filter performance
+and complexity.
+
+It should also be noted that whilst this investigation made use of the Ensemble
+Kalman filter, a number of variants of this method exist
+\citep{keller2018comparing, katzfuss2016understanding} which aim to address
+different problems that may be encountered.
+
+%Different types of EnKF and the implications for ensemble size
+%\citep{keller2018comparing}.
+%\begin{itemize}
+    %\item Damping: counteract filter divergence
+    %\item Localisation: reduce the effect of spurious correlations
+    %\item Hybrid EnKF: Covariance matrix is made up of the weighted sum of the
+        %usual covariance matrix and a separate static covariance matrix that
+        %encodes prior underlying knowledge about the system
+    %\item Dual EnKF: Split the state vector into state and parameters. At
+        %assimilation: update parameters, recalculate forecast, update state
+    %\item Normal Score EnKF: Developed to handle non-Gaussian PDFs in EnKF. At
+        %assimilation: transform state, parameters and measurements into
+        %Z-scores, perform EnKF update based on transformed values, transform
+        %back from Z-scores
+    %\item Iterative EnKF
+%\end{itemize}
+
+%Extensions to the EnKF \cite{katzfuss2016understanding}:
+%\begin{itemize}
+    %\item Variance inflation: often have ensemble size much smaller than state
+        %dimension, which can mean that $\mathbf{K}$ can be a poor approximation
+        %of the kalman gain matrix; we can therefore get downwardly biased
+        %estimates of the posterior state covariance matrix ---  we can fix this
+        %with covariance inflation whereby we multiply the covariance matrix by a
+        %constant (greater than one). (Should check if this is an issue that we
+        %need to consider).
+    %\item Localisation: small ensemble sizes can result in spurious
+        %correlations between state components that are physically far apart ---
+        %we can use localisation to avoid this.
+    %\item Parameter estimation: 
+%\end{itemize}
 

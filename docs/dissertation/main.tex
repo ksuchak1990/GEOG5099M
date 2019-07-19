@@ -1,9 +1,12 @@
-\documentclass[12pt, twoside, a4paper]{report}
+% Class
+\documentclass[11pt, twoside, a4paper]{report}
 
+% Packages
 \usepackage{amsmath}
+\usepackage[toc, page]{appendix}
 \usepackage{booktabs}
 \usepackage{dsfont}
-\usepackage[toc, page]{appendix}
+\usepackage{fancyhdr}
 \usepackage{graphicx}
 \usepackage[sort&compress]{natbib}
 \usepackage{subcaption}
@@ -19,12 +22,19 @@
 \title{Towards Real-time Pedestrian Modelling: Implementing the Ensemble Kalman
 Filter for an Agent-Based Model}
 \author{Keiran Suchak --- 200888140}
-\maketitle
+\date{\today}
+%\maketitle
+\include{title}
 
 \chapter*{\centering Abstract}
 \addcontentsline{toc}{chapter}{Abstract}
 
 This is the abstract.
+
+\chapter*{\centering Acknowledgements}
+\addcontentsline{toc}{chapter}{Acknowledgements}
+
+These are acknowledgements.
 
 \tableofcontents
 \listoffigures
@@ -57,6 +67,14 @@ This is the abstract.
     %\item What are we doing to solve the problem? How is this different?
     %\item How well does our attempt work? How does this compare to others?
 %\end{itemize}
+
+% page-styling
+\pagestyle{fancy}
+\fancyhead{}
+\fancyhead[LE,RO]{Chapter \thechapter}
+\fancyfoot{}
+\fancyfoot[LE,RO]{\thepage}
+%\fancyfoot[CO,RE]{Author Name}
 
 \include{chapters/introduction}
 
