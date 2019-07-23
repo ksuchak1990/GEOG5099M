@@ -32,7 +32,7 @@ observations.
 The model state shown in Figure \ref{fig:enkf_abm} is represented by the
 ensemble mean position for each agent.
 
-\begin{figure}[h!]
+\begin{figure}[h]
     \centering
     \begin{subfigure}[h]{\textwidth}
         \includegraphics[width=\textwidth]{before_update_100.eps}
@@ -44,8 +44,8 @@ ensemble mean position for each agent.
         \caption{After update.}\label{fig:abm_after}
     \end{subfigure}
     \caption[Effect of Ensemle Kalman Filter update on state of
-    model.]{\centering Effect of Ensemble Kalman Filter update on state of model
-    ($k=100$).}\label{fig:enkf_abm}
+    model.]{\centering Effect of Ensemble Kalman Filter update on state of
+    agents in model ($k=100$).}\label{fig:enkf_abm}
 \end{figure}
 
 It can be seen that in the case of many agents, the forecast position is already
@@ -85,7 +85,7 @@ method on the state of one of the agents in the model.
 In particular, this allows us to examine the effect of applying data
 assimilation to the state of each of the ensemble members.
 
-\begin{figure}[h!]
+\begin{figure}[h]
     \centering
     \begin{subfigure}[h]{\textwidth}
         \includegraphics[width=\textwidth]{before_update_250_single.eps}
@@ -98,7 +98,8 @@ assimilation to the state of each of the ensemble members.
     \end{subfigure}
     \caption[Effect of Ensemble Kalman Filter update on state of a single agent
     in the model.]{\centering Effect of Ensemble Kalman Filter update on state
-    of a single agent in the model ($k=250$).}\label{fig:enkf_abm_single}
+    of ensemble members for a single agent in the model
+    ($k=250$).}\label{fig:enkf_abm_single}
 \end{figure}
 
 In Figure \ref{fig:abm_before_single}, it can be seen that the error in the
@@ -157,7 +158,7 @@ noise with a standard deviation of $1$ to the true state, it is unsurprising to
 observe that the error in the observations is consistently $1$ at each of the
 assimilation steps.
 
-\begin{figure}[h!]
+\begin{figure}[h]
     \centering
     \includegraphics[width=\textwidth]{rmse_comparison.eps}
     \caption[Comparison of errors in model forecasts, model analysis and

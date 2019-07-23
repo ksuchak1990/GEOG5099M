@@ -8,6 +8,7 @@
 \usepackage{dsfont}
 \usepackage{fancyhdr}
 \usepackage{graphicx}
+\usepackage{pdfpages}
 \usepackage[sort&compress]{natbib}
 \usepackage{subcaption}
 \usepackage[nottoc]{tocbibind}
@@ -19,6 +20,9 @@
 
 \begin{document}
 
+\includepdf{cover_sheet.pdf}
+\cleardoublepage
+
 \title{Towards Real-time Pedestrian Modelling: Implementing the Ensemble Kalman
 Filter for an Agent-Based Model}
 \author{Keiran Suchak --- 200888140}
@@ -29,12 +33,46 @@ Filter for an Agent-Based Model}
 \chapter*{\centering Abstract}
 \addcontentsline{toc}{chapter}{Abstract}
 
-This is the abstract.
+One of the most prevalent methods by which we can simulate the movement of
+pedestrians around urban environments is agent-based modelling.
+This technique models at the microscopic level, representing each pedestrian as
+an individual agent with interactions between agents (and between agents and
+their environment) resulting in the emergence of macroscopic system behaviour.
+However, such interactions often induce some degree of randomness resulting in
+the models diverging from the real state of the system.
+As a result, agent-based models are predominantly used to simulate offline
+scenarios.
+
+With the advent of big data, however, there has been a growing interest in
+leveraging the available data to simulate social systems in real-time.
+To achieve this, new methods need to be developed to combine observations with
+model states; one such method that exists in the field of numerical weather
+prediction is data assimilation.
+Relatively little work has been undertaken so far that makes use of data
+assimilation methods in conjunction with pedestrian agent-based models.
+This investigation, therefore, presents a preliminary experiment to demonstrate
+that the Ensemble Kalman Filter method of data assimilation can be implemented
+in conjunction with an agent-based model of pedestrian movement and furthermore
+can improve the accuracy with which such a model simulates a system.
+
+By inspecting the effect of the Ensemble Kalman Filter on the state of
+individual agents, it is seen that the data assimilation technique successfully
+increases the accuracy of the simulation.
+Furthermore, in some cases, it is found that the model in conjunction with the
+Ensemble Kalman Filter is more accurate than the observations used for
+assimilation.
+The work is limited in its scope, with only a single set of model and filter
+parameters being used.
+Future work should, therefore, seek to explore the parameter space and its
+impact on filter performance.
 
 \chapter*{\centering Acknowledgements}
 \addcontentsline{toc}{chapter}{Acknowledgements}
 
-These are acknowledgements.
+I would like to express my gratitude to my supervisors, Prof Nick Malleson, Dr
+Jon Ward and Dr Minh Kieu for their guidance.
+In particular, I would like to thank them for the time spent on discussions over
+the course of this dissertation.
 
 \tableofcontents
 \listoffigures
